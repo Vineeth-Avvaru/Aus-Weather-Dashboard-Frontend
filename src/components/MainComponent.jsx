@@ -5,7 +5,7 @@ import Map from "./MapComponent";
 function Main() {
   return (
     <div>
-      Main !!
+      Main Vineeth !!
       <Map />
     </div>
   );
