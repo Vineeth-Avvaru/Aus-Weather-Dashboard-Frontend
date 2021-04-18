@@ -1,0 +1,48 @@
+.main-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.heading-container {
+  background-color: #4056a1;
+  height: 6vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h3 {
+  color: lightgray;
+  margin: 0;
+}
+
+.graph-row {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid lightgray;
+  height: calc(47vh - 2px);
+}
+
+.graph-container {
+  border: 1px solid lightgray;
+}
+
+.map-container {
+  width: 40%;
+}
+
+.bargraph-container {
+  width: 30%;
+}
+
+.linegraph-container {
+  width: 30%;
+}
+
+.scatterplot-container {
+  width: 35%;
+}
+
+.parallelplot-container {
+  width: 65%;
+}
