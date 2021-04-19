@@ -14,6 +14,7 @@ class BarGraph extends React.Component {
     console.log("Draw Bar Graph");
   }
   render() {
+    console.log(this.props.weatherData);
     return <div>Bar Graph !!</div>;
   }
 }

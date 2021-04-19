@@ -10,15 +10,28 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      backendData: {},
+      weatherData: {},
     };
   }
 
   componentDidMount() {
-    console.log("Fetch Data and Put it in state");
+    // console.log("Fetch Data and Put it in state");
+    fetch("http://localhost:5000/getWeatherData", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({
+          weatherData: { ...data },
+        });
+      });
   }
 
   render() {
+    // console.log(this.state.weatherData);
     return (
       <div className="main-container">
         <div className="heading-container">
@@ -29,7 +42,7 @@ class Main extends React.Component {
             <Map />
           </div>
           <div className="graph-container bargraph-container">
-            <BarGraph />
+            <BarGraph weatherData={this.state.weatherData} />
           </div>
           <div className="graph-container linegraph-container">
             <LineGraph />
