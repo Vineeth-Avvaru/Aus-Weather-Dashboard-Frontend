@@ -45,7 +45,7 @@ class Main extends React.Component {
             <BarGraph weatherData={this.state.weatherData} />
           </div>
           <div className="graph-container linegraph-container">
-            <LineGraph />
+            <LineGraph weatherData={this.state.weatherData} />
           </div>
         </div>
         <div className="graph-row">

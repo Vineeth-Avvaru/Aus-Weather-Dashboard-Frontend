@@ -6,15 +6,22 @@ class LineGraph extends React.Component {
     this.drawLineGraph = this.drawLineGraph.bind(this);
   }
 
-  componentDidMount() {
-    this.drawLineGraph();
+  // componentDidMount() {
+  //   this.drawLineGraph();
+  // }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.weatherData !== prevProps.weatherData) {
+      this.drawLineGraph();
+    }
   }
 
   drawLineGraph() {
     console.log("Draw Line Graph");
+    console.log(this.props.weatherData);
   }
   render() {
-    return <div>Line Graph !!</div>;
+    return <div className="line-graph"></div>;
   }
 }
 
