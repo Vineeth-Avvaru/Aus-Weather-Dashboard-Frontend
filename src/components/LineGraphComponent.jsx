@@ -11,7 +11,10 @@ class LineGraph extends React.Component {
   // }
 
   componentDidUpdate(prevProps) {
-    if (this.props.weatherData !== prevProps.weatherData) {
+    if (
+      JSON.stringify(this.props.weatherData) !==
+      JSON.stringify(prevProps.weatherData)
+    ) {
       this.drawLineGraph();
     }
   }
@@ -19,6 +22,13 @@ class LineGraph extends React.Component {
   drawLineGraph() {
     console.log("Draw Line Graph");
     console.log(this.props.weatherData);
+    let weatherData = this.props.weatherData;
+    let nRows = weatherData.data.length;
+    let uniqLocations = new Set();
+    for (let i = 0; i < nRows; i++) {
+      uniqLocations.add(weatherData.data[i][1]);
+    }
+    console.log(uniqLocations);
   }
   render() {
     return <div className="line-graph"></div>;
