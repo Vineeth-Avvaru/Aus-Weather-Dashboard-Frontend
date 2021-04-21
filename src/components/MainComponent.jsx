@@ -45,7 +45,7 @@ class Main extends React.Component {
             <BarGraph weatherData={this.state.weatherData} />
           </div>
           <div className="graph-container linegraph-container">
-            <LineGraph />
+            <LineGraph weatherData={this.state.weatherData} />
           </div>
         </div>
         <div className="graph-row">
@@ -53,7 +53,7 @@ class Main extends React.Component {
             <ScatterPlot />
           </div>
           <div className="graph-container parallelplot-container">
-            <ParallelPlot />
+            <ParallelPlot weatherData={this.state.weatherData} />
           </div>
         </div>
       </div>

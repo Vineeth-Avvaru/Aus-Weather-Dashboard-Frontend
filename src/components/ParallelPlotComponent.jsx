@@ -1,4 +1,5 @@
 import React from "react";
+import "./ParallelPlotComponent.css";
 
 class ParallelPlot extends React.Component {
   constructor(props) {
@@ -11,7 +12,7 @@ class ParallelPlot extends React.Component {
   }
 
   drawParallelPlot() {
-    console.log("drawParallelPlot");
+    // console.log("drawParallelPlot");
   }
   render() {
     return <div>ParallelPlot !!</div>;

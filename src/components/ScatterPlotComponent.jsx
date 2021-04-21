@@ -11,7 +11,7 @@ class ScatterPlot extends React.Component {
   }
 
   drawScatterPlot() {
-    console.log("Draw Scatter Plot");
+    // console.log("Draw Scatter Plot");
   }
   render() {
     return <div>Scatter Plot !!</div>;
