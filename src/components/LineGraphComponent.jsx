@@ -133,7 +133,7 @@ class LineGraph extends React.Component {
 
     const yScale = d3
       .scaleLinear()
-      .domain([0, maxAvgRainfall])
+      .domain([0, maxAvgRainfall + 1])
       .range([height, 0]);
 
     graph
