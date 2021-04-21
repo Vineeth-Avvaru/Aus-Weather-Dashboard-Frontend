@@ -11,7 +11,7 @@ class Map extends React.Component {
   }
 
   drawMap() {
-    console.log("Draw Map");
+    // console.log("Draw Map");
   }
   render() {
     return <div>Map!!</div>;

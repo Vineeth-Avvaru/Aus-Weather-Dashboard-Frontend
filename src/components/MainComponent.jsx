@@ -53,7 +53,7 @@ class Main extends React.Component {
             <ScatterPlot />
           </div>
           <div className="graph-container parallelplot-container">
-            <ParallelPlot />
+            <ParallelPlot weatherData={this.state.weatherData} />
           </div>
         </div>
       </div>
