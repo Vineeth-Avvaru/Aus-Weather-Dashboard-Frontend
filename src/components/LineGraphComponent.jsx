@@ -24,19 +24,26 @@ class LineGraph extends React.Component {
   drawLineGraph() {
     let weatherData = this.props.weatherData;
     let columns = weatherData.columns;
-    let nRows = weatherData.data.length;
-    let uniqLocations = new Set();
-    for (let i = 0; i < nRows; i++) {
-      uniqLocations.add(weatherData.data[i][1]);
-    }
+    // let nRows = weatherData.data.length;
+    // let uniqLocations = new Set();
+    // for (let i = 0; i < nRows; i++) {
+    //   uniqLocations.add(weatherData.data[i][1]);
+    // }
     let yearIndex = columns.indexOf("year");
     let locationIndex = columns.indexOf("Location");
     let filteredData = weatherData.data.filter(
       (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017
     );
 
-    let locations = ["Perth", "Adelaide", "Canberra", "Brisbane"];
-    let years = [2010, 2011, 2012];
+    let locations = [
+      "Perth",
+      "Adelaide",
+      "Canberra",
+      "Brisbane",
+      // "Uluru",
+      // "Hobart",
+    ];
+    let years = [2010, 2011, 2012, 2013, 2014];
     filteredData = filteredData.filter(
       (item) =>
         locations.indexOf(item[locationIndex]) !== -1 &&
@@ -45,8 +52,23 @@ class LineGraph extends React.Component {
 
     let rainfallIndex = columns.indexOf("Rainfall");
     let monthIndex = columns.indexOf("month");
-    let rainfallData = filteredData.map((item) => item[rainfallIndex]);
-    let maxRainfall = Math.round(Math.max(...rainfallData) * 100) / 100;
+
+    let avgRainfall = [];
+    for (let i = 0; i < locations.length; i++) {
+      let locationData = filteredData.filter(
+        (item) => item[locationIndex] === locations[i]
+      );
+      for (let j = 1; j <= 12; j++) {
+        let val = 0;
+        for (let k = 0; k < locationData.length; k++) {
+          if (locationData[k][monthIndex] === j)
+            val += locationData[k][rainfallIndex];
+        }
+        avgRainfall.push(val / years.length);
+      }
+    }
+    let maxAvgRainfall = Math.round(Math.max(...avgRainfall) * 100) / 100;
+
     let margin = { top: 10, right: 10, bottom: 60, left: 50 },
       width = 400 - margin.left - margin.right,
       height = 350 - margin.top - margin.bottom;
@@ -109,7 +131,10 @@ class LineGraph extends React.Component {
       .style("font-weight", "bold")
       .text("Month");
 
-    const yScale = d3.scaleLinear().domain([0, maxRainfall]).range([height, 0]);
+    const yScale = d3
+      .scaleLinear()
+      .domain([0, maxAvgRainfall])
+      .range([height, 0]);
 
     graph
       .append("g")
