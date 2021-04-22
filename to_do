@@ -1,0 +1,9 @@
+Priority 1 : Need for function/Deadline 2 : Feature implementation 3 : Bug 4 : Good to have feature
+
+TO Do: 
+Priority 2. Add on hover color, display text on bar
+Priority 2. Add on hover color, display text on scatter
+Priority 2. Add brushing linking with dashboard for bar 
+Priority 2. Add brushing linking with dashboard for scatter
+Priority 3. User same color for clustering across dashboard
+Priority 4 .Stacked bar graph with top 4 locations
