@@ -1,0 +1,21 @@
+.background path {
+  fill: none;
+  stroke: #ddd;
+  shape-rendering: crispEdges;
+}
+
+.foreground path {
+  fill: none;
+}
+.blah path {
+  visibility: visible;
+}
+
+text {
+  /* color: black; */
+  cursor: move;
+}
+
+.blah text {
+  fill: black;
+}
