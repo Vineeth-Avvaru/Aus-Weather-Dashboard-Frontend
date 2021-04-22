@@ -68,8 +68,6 @@ class BarGraph extends React.Component {
 
     // var x = d3.scaleBand().range([0, width]).padding(0.4);
     // var y = d3.scaleLinear().range([height, 0]);
-    console.log(years,annual_rainfall)
-    console.log(height,width)
     const graph = svg
       .append("g")
       .attr("transform", "translate(" + width_cont*0.1 + "," + height_cont*0.05 + ")");
@@ -124,7 +122,7 @@ class BarGraph extends React.Component {
 
   }
   render() {
-    // console.log(this.props.weatherData);
+     //console.log(this.props.weatherData);
     return <div className="bar-graph"></div>;
   } 
 }
