@@ -80,7 +80,7 @@ class ParallelPlot extends React.Component {
 
     let margin = { top: 50, right: 30, bottom: 20, left: 20 },
       width = 700 - margin.left - margin.right,
-      height = 345 - margin.top - margin.bottom;
+      height = 330 - margin.top - margin.bottom;
 
     var x = d3.scalePoint().range([0, width]).padding(0.1).domain(features),
       y = {},
