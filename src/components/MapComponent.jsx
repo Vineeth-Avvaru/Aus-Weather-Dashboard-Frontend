@@ -14,7 +14,14 @@ class Map extends React.Component {
     // console.log("Draw Map");
   }
   render() {
-    return <div>Map!!</div>;
+    const locations = ["Melbourne", "Perth"];
+    return (
+      <div>
+        <button onClick={() => this.props.handleLocations(locations)}>
+          Update Locations
+        </button>
+      </div>
+    );
   }
 }
 

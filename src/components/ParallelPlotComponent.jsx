@@ -53,11 +53,9 @@ class ParallelPlot extends React.Component {
     features_data = features_data[0].map((_, colIndex) =>
       features_data.map((row) => row[colIndex])
     );
-    console.log(indexMap);
     features_data = features_data.filter(
       (item, index) => [...indexMap.values()].indexOf(index) !== -1
     );
-    console.log(features_data);
     let datapoints = features_data[0].map((x, i) =>
       features_data.map((x) => x[i])
     );
