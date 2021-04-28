@@ -11,11 +11,13 @@ class Main extends React.Component {
     super(props);
     this.state = {
       weatherData: {},
+      locations: [],
+      years: [],
     };
+    this.handleLocations = this.handleLocations.bind(this);
   }
 
   componentDidMount() {
-    // console.log("Fetch Data and Put it in state");
     fetch("http://localhost:5000/getWeatherData", {
       method: "GET",
       headers: {
@@ -30,8 +32,18 @@ class Main extends React.Component {
       });
   }
 
+  handleLocations(locations) {
+    this.setState({
+      locations: [...locations],
+    });
+  }
+
+  handleYears(years) {
+    this.setState({
+      years: [...years],
+    });
+  }
   render() {
-    // console.log(this.state.weatherData);
     return (
       <div className="main-container">
         <div className="heading-container">
@@ -39,7 +51,9 @@ class Main extends React.Component {
         </div>
         <div className="graph-row">
           <div className="graph-container map-container">
-            <Map />
+            <Map
+              handleLocations={(locations) => this.handleLocations(locations)}
+            />
           </div>
           <div className="graph-container bargraph-container">
             <BarGraph weatherData={this.state.weatherData} />
@@ -50,7 +64,7 @@ class Main extends React.Component {
         </div>
         <div className="graph-row">
           <div className="graph-container scatterplot-container">
-            <ScatterPlot  weatherData={this.state.weatherData}/>
+            <ScatterPlot weatherData={this.state.weatherData} />
           </div>
           <div className="graph-container parallelplot-container">
             <ParallelPlot weatherData={this.state.weatherData} />
