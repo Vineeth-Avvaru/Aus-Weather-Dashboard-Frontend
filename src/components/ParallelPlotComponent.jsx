@@ -77,10 +77,10 @@ class ParallelPlot extends React.Component {
     }
 
     let width_cont = document.getElementsByClassName(
-      "parallelplot-container"
+      "parallelplot-container1"
     )[0].offsetWidth;
     let height_cont = document.getElementsByClassName(
-      "parallelplot-container"
+      "parallelplot-container1"
     )[0].offsetHeight;
     let margin = {
         top: height_cont * 0.03,

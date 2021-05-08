@@ -17,9 +17,9 @@ class Map extends React.Component {
     const locations = ["Melbourne", "Perth"];
     return (
       <div>
-        <button onClick={() => this.props.handleLocations(locations)}>
+        {/* <button onClick={() => this.props.handleLocations(locations)}>
           Update Locations
-        </button>
+        </button> */}
       </div>
     );
   }

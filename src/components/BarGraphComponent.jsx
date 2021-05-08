@@ -52,9 +52,9 @@ class BarGraph extends React.Component {
 
     let years = Object.keys(rainfall);
     let annual_rainfall = Object.values(rainfall);
-    let width_cont = document.getElementsByClassName("bargraph-container")[0]
+    let width_cont = document.getElementsByClassName("bargraph-container1")[0]
       .offsetWidth;
-    let height_cont = document.getElementsByClassName("bargraph-container")[0]
+    let height_cont = document.getElementsByClassName("bargraph-container1")[0]
       .offsetHeight;
     let margin = {
         top: height_cont * 0.03,

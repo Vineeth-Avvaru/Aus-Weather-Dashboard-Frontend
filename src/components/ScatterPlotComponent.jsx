@@ -39,10 +39,12 @@ class ScatterPlot extends React.Component {
       cluster.push(element[clusterIndex]);
     });
 
-    let width_cont = document.getElementsByClassName("bargraph-container")[0]
-      .offsetWidth;
-    let height_cont = document.getElementsByClassName("bargraph-container")[0]
-      .offsetHeight;
+    let width_cont = document.getElementsByClassName(
+      "scatterplot-container1"
+    )[0].offsetWidth;
+    let height_cont = document.getElementsByClassName(
+      "scatterplot-container1"
+    )[0].offsetHeight;
     let margin = {
         top: height_cont * 0.03,
         right: width_cont * 0.03,
