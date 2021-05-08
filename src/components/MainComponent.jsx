@@ -57,18 +57,34 @@ class Main extends React.Component {
               />
             </div>
             <div className="graph-container bargraph-container">
-              <BarGraph weatherData={this.state.weatherData} />
+              <h4 className="graph-heading">Stacked Bar Graph</h4>
+              <div className="bargraph-container1">
+                <BarGraph weatherData={this.state.weatherData} />
+              </div>
             </div>
             <div className="graph-container linegraph-container">
-              <LineGraph weatherData={this.state.weatherData} />
+              <h4 className="graph-heading">
+                Stacked Line Chart (Avg Rainfall vs Month)
+              </h4>
+              <div className="linegraph-container1">
+                <LineGraph weatherData={this.state.weatherData} />
+              </div>
             </div>
           </div>
           <div className="graph-row">
             <div className="graph-container scatterplot-container">
-              <ScatterPlot weatherData={this.state.weatherData} />
+              <h4 className="graph-heading">
+                ScatterPlot (Rainfall vs Evaporation)
+              </h4>
+              <div className="scatterplot-container1">
+                <ScatterPlot weatherData={this.state.weatherData} />
+              </div>
             </div>
             <div className="graph-container parallelplot-container">
-              <ParallelPlot weatherData={this.state.weatherData} />
+              <h4 className="graph-heading">Parallel Coordinates Plot</h4>
+              <div className="parallelplot-container1">
+                <ParallelPlot weatherData={this.state.weatherData} />
+              </div>
             </div>
           </div>
         </div>

@@ -1,7 +1,5 @@
 import React from "react";
 import * as d3 from "d3";
-import "./LineGraphComponent.css";
-
 class LineGraph extends React.Component {
   constructor(props) {
     super(props);
@@ -70,9 +68,9 @@ class LineGraph extends React.Component {
     }
     let maxAvgRainfall = Math.round(Math.max(...avgRainfall) * 100) / 100;
 
-    let width_cont = document.getElementsByClassName("linegraph-container")[0]
+    let width_cont = document.getElementsByClassName("linegraph-container1")[0]
       .offsetWidth;
-    let height_cont = document.getElementsByClassName("linegraph-container")[0]
+    let height_cont = document.getElementsByClassName("linegraph-container1")[0]
       .offsetHeight;
     let margin = {
         top: height_cont * 0.03,
@@ -201,11 +199,7 @@ class LineGraph extends React.Component {
     }
   }
   render() {
-    return (
-      <div className="main-linegraph-container">
-        <div className="line-graph"></div>
-      </div>
-    );
+    return <div className="line-graph"></div>;
   }
 }
 

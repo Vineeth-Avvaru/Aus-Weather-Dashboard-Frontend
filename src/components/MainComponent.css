@@ -12,16 +12,13 @@
 }
 
 h3 {
-  color: lightgray;
+  color: #eeeeee;
   margin: 0;
 }
 
 .graph-row {
   display: flex;
   flex-direction: row;
-  /* border: 1px solid lightgray; */
-  /* height: calc(47vh - 40px); */
-  /* height: calc(47vh - 20px); */
   height: 47vh;
 }
 
@@ -30,6 +27,7 @@ h3 {
   margin: 10px;
   border-radius: 10px;
   background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .map-container {
@@ -54,4 +52,23 @@ h3 {
 
 .graphs-content-container {
   background-color: #eeeeee;
+}
+
+.linegraph-container1,
+.parallelplot-container1,
+.bargraph-container1,
+.scatterplot-container1 {
+  width: 100%;
+  height: 90%;
+}
+
+.graph-heading {
+  height: 10%;
+  width: 100%;
+  margin: 0;
+  color: #eee;
+  background-color: #4056a1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
