@@ -19,9 +19,6 @@ h3 {
 .graph-row {
   display: flex;
   flex-direction: row;
-  /* border: 1px solid lightgray; */
-  /* height: calc(47vh - 40px); */
-  /* height: calc(47vh - 20px); */
   height: 47vh;
 }
 
@@ -30,6 +27,7 @@ h3 {
   margin: 10px;
   border-radius: 10px;
   background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .map-container {
