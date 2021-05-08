@@ -76,11 +76,26 @@ class ParallelPlot extends React.Component {
       return colores_g[n % colores_g.length];
     }
 
-    let margin = { top: 50, right: 30, bottom: 20, left: 20 },
-      width = 700 - margin.left - margin.right,
-      height = 330 - margin.top - margin.bottom;
+    let width_cont = document.getElementsByClassName(
+      "parallelplot-container"
+    )[0].offsetWidth;
+    let height_cont = document.getElementsByClassName(
+      "parallelplot-container"
+    )[0].offsetHeight;
+    let margin = {
+        top: height_cont * 0.03,
+        right: width_cont * 0.03,
+        bottom: height_cont * 0.03,
+        left: width_cont * 0.03,
+      },
+      width = width_cont - margin.left - margin.right,
+      height = height_cont - margin.top - margin.bottom;
 
-    var x = d3.scalePoint().range([0, width]).padding(0.1).domain(features),
+    var x = d3
+        .scalePoint()
+        .range([width * 0.05, width * 0.85])
+        .padding(0.1)
+        .domain(features),
       y = {},
       dragging = {};
 
@@ -94,20 +109,29 @@ class ParallelPlot extends React.Component {
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+    var graph = svg
+      .append("g")
+      .attr(
+        "transform",
+        "translate(" + width_cont * 0.1 + "," + height_cont * 0.05 + ")"
+      );
     for (let i = 0; i < features.length; i++) {
       let feature = features[i];
       if (feature !== "month") {
         y[feature] = d3
           .scaleLinear()
           .domain([d3.min(features_data[i]), d3.max(features_data[i])])
-          .range([height, 0]);
+          .range([height * 0.93, height * 0.05]);
       } else {
-        y[feature] = d3.scaleBand().domain(features_data[i]).range([height, 0]);
+        y[feature] = d3
+          .scaleBand()
+          .domain(features_data[i])
+          .range([height * 0.93, height * 0.05]);
       }
     }
 
     // Add grey background lines for context.
-    background = svg
+    background = graph
       .append("g")
       .attr("class", "background")
       .selectAll("path")
@@ -117,7 +141,7 @@ class ParallelPlot extends React.Component {
       .attr("d", path);
 
     // Add blue foreground lines for focus.
-    foreground = svg
+    foreground = graph
       .append("g")
       .attr("class", "foreground")
       .selectAll("path")
@@ -130,7 +154,7 @@ class ParallelPlot extends React.Component {
       });
 
     // Add a group element for each dimension.
-    var g = svg
+    var g = graph
       .selectAll(".feature")
       .data(features)
       .enter()
@@ -191,7 +215,11 @@ class ParallelPlot extends React.Component {
       })
       .append("text")
       .style("text-anchor", "middle")
-      .attr("y", -9)
+      .attr("y", -1)
+      .attr("text-anchor", "middle")
+      .attr("fill", "black")
+      .attr("font-family", "sans-serif")
+      .attr("font-size", "14px")
       .text(function (d) {
         return d;
       });

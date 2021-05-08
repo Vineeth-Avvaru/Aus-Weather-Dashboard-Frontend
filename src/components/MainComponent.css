@@ -19,12 +19,17 @@ h3 {
 .graph-row {
   display: flex;
   flex-direction: row;
-  border: 1px solid lightgray;
-  height: calc(47vh - 2px);
+  /* border: 1px solid lightgray; */
+  /* height: calc(47vh - 40px); */
+  /* height: calc(47vh - 20px); */
+  height: 47vh;
 }
 
 .graph-container {
   border: 1px solid lightgray;
+  margin: 10px;
+  border-radius: 10px;
+  background-color: white;
 }
 
 .map-container {
@@ -45,4 +50,8 @@ h3 {
 
 .parallelplot-container {
   width: 65%;
+}
+
+.graphs-content-container {
+  background-color: #eeeeee;
 }

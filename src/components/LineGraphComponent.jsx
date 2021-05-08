@@ -1,5 +1,6 @@
 import React from "react";
 import * as d3 from "d3";
+import "./LineGraphComponent.css";
 
 class LineGraph extends React.Component {
   constructor(props) {
@@ -69,9 +70,18 @@ class LineGraph extends React.Component {
     }
     let maxAvgRainfall = Math.round(Math.max(...avgRainfall) * 100) / 100;
 
-    let margin = { top: 10, right: 10, bottom: 60, left: 50 },
-      width = 400 - margin.left - margin.right,
-      height = 350 - margin.top - margin.bottom;
+    let width_cont = document.getElementsByClassName("linegraph-container")[0]
+      .offsetWidth;
+    let height_cont = document.getElementsByClassName("linegraph-container")[0]
+      .offsetHeight;
+    let margin = {
+        top: height_cont * 0.03,
+        right: width_cont * 0.03,
+        bottom: height_cont * 0.03,
+        left: width_cont * 0.03,
+      },
+      width = width_cont - margin.left - margin.right,
+      height = height_cont - margin.top - margin.bottom;
 
     function colores_google(n) {
       var colores_g = [
@@ -97,7 +107,10 @@ class LineGraph extends React.Component {
 
     const graph = svg
       .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      .attr(
+        "transform",
+        "translate(" + width_cont * 0.1 + "," + height_cont * 0.05 + ")"
+      );
 
     const xScale = d3
       .scaleBand()
@@ -106,38 +119,34 @@ class LineGraph extends React.Component {
           return d[monthIndex];
         })
       )
-      .range([0, width])
+      .range([width * 0.05, width * 0.85])
       .padding(0.1);
 
     graph
       .append("g")
-      .attr("transform", "translate(0," + height + ")")
+      .attr("transform", "translate(0," + height * 0.78 + ")")
       .call(
         d3.axisBottom(xScale).tickFormat((d) => {
           return d;
         })
       )
-      .selectAll("text")
-      .style("text-anchor", "end")
-      .attr("stroke", "black");
-
-    svg
       .append("text")
-      .attr(
-        "transform",
-        "translate(" + width + " ," + (height + margin.top + 40) + ")"
-      )
-      .style("text-anchor", "end")
-      .style("font-weight", "bold")
+      .attr("y", height * 0.15)
+      .attr("x", width / 2)
+      .attr("text-anchor", "middle")
+      .attr("fill", "black")
+      .attr("font-family", "sans-serif")
+      .attr("font-size", "14px")
       .text("Month");
 
     const yScale = d3
       .scaleLinear()
       .domain([0, maxAvgRainfall + 1])
-      .range([height, 0]);
+      .range([height * 0.78, height * 0.05]);
 
     graph
       .append("g")
+      .attr("transform", "translate(" + width * 0.05 + ",0 )")
       .call(
         d3
           .axisLeft(yScale)
@@ -148,11 +157,13 @@ class LineGraph extends React.Component {
       )
       .append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", 1)
-      .attr("dy", "-3.1em")
-      .attr("text-anchor", "end")
-      .attr("stroke", "black")
-      .text("Average Rainfall");
+      .attr("y", -width * 0.07)
+      .attr("x", -height / 2)
+      .attr("text-anchor", "middle")
+      .attr("fill", "black")
+      .attr("font-family", "sans-serif")
+      .attr("font-size", "14px")
+      .text("Avg Rainfall");
 
     for (let i = 0; i < locations.length; i++) {
       let locationData = filteredData.filter(
@@ -190,7 +201,11 @@ class LineGraph extends React.Component {
     }
   }
   render() {
-    return <div className="line-graph"></div>;
+    return (
+      <div className="main-linegraph-container">
+        <div className="line-graph"></div>
+      </div>
+    );
   }
 }
 
