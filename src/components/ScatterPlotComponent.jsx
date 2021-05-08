@@ -87,7 +87,7 @@ class ScatterPlot extends React.Component {
       .attr("text-anchor", "middle")
       .attr("fill", "black")
       .attr("font-family", "sans-serif")
-      .attr("font-size", "15px")
+      .attr("font-size", "14px")
       .text("Evaporation");
     graph
       .append("g")
@@ -100,7 +100,7 @@ class ScatterPlot extends React.Component {
       .attr("text-anchor", "middle")
       .attr("fill", "black")
       .attr("font-family", "sans-serif")
-      .attr("font-size", "15px")
+      .attr("font-size", "14px")
       .text("Rainfall");
 
     graph

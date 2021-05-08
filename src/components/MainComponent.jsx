@@ -49,25 +49,27 @@ class Main extends React.Component {
         <div className="heading-container">
           <h3>Visualization Final Project</h3>
         </div>
-        <div className="graph-row">
-          <div className="graph-container map-container">
-            <Map
-              handleLocations={(locations) => this.handleLocations(locations)}
-            />
+        <div className="graphs-content-container">
+          <div className="graph-row">
+            <div className="graph-container map-container">
+              <Map
+                handleLocations={(locations) => this.handleLocations(locations)}
+              />
+            </div>
+            <div className="graph-container bargraph-container">
+              <BarGraph weatherData={this.state.weatherData} />
+            </div>
+            <div className="graph-container linegraph-container">
+              <LineGraph weatherData={this.state.weatherData} />
+            </div>
           </div>
-          <div className="graph-container bargraph-container">
-            <BarGraph weatherData={this.state.weatherData} />
-          </div>
-          <div className="graph-container linegraph-container">
-            <LineGraph weatherData={this.state.weatherData} />
-          </div>
-        </div>
-        <div className="graph-row">
-          <div className="graph-container scatterplot-container">
-            <ScatterPlot weatherData={this.state.weatherData} />
-          </div>
-          <div className="graph-container parallelplot-container">
-            <ParallelPlot weatherData={this.state.weatherData} />
+          <div className="graph-row">
+            <div className="graph-container scatterplot-container">
+              <ScatterPlot weatherData={this.state.weatherData} />
+            </div>
+            <div className="graph-container parallelplot-container">
+              <ParallelPlot weatherData={this.state.weatherData} />
+            </div>
           </div>
         </div>
       </div>
