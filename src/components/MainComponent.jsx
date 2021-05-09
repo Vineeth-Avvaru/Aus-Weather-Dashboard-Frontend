@@ -14,9 +14,13 @@ class Main extends React.Component {
       weatherData: {},
       locations: [],
       years: [],
+      selectedIDs: [],
+      interactiveMode: false,
       isLoading: true,
     };
     this.handleLocations = this.handleLocations.bind(this);
+    this.handleYears = this.handleYears.bind(this);
+    this.highlightDataPoints = this.highlightDataPoints.bind(this);
   }
 
   componentDidMount() {
@@ -38,14 +42,24 @@ class Main extends React.Component {
   handleLocations(locations) {
     this.setState({
       locations: [...locations],
+      interactiveMode: true,
     });
   }
 
   handleYears(years) {
     this.setState({
       years: [...years],
+      interactiveMode: true,
     });
   }
+
+  highlightDataPoints(idArrray) {
+    this.setState({
+      selectedIDs: [...idArrray],
+      interactiveMode: true,
+    });
+  }
+
   render() {
     return (
       <div className="main-container">
