@@ -57,9 +57,13 @@ h3 {
 .linegraph-container1,
 .parallelplot-container1,
 .bargraph-container1,
-.scatterplot-container1 {
+.scatterplot-container1,
+.map-container1 {
   width: 100%;
   height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .graph-heading {
