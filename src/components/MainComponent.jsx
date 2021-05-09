@@ -4,6 +4,7 @@ import BarGraph from "./BarGraphComponent";
 import LineGraph from "./LineGraphComponent";
 import ScatterPlot from "./ScatterPlotComponent";
 import ParallelPlot from "./ParallelPlotComponent";
+import loadingGIF from "../assets/hippo.gif";
 import "./MainComponent.css";
 
 class Main extends React.Component {
@@ -13,6 +14,7 @@ class Main extends React.Component {
       weatherData: {},
       locations: [],
       years: [],
+      isLoading: true,
     };
     this.handleLocations = this.handleLocations.bind(this);
   }
@@ -28,6 +30,7 @@ class Main extends React.Component {
       .then((data) => {
         this.setState({
           weatherData: { ...data },
+          isLoading: false,
         });
       });
   }
@@ -52,14 +55,32 @@ class Main extends React.Component {
         <div className="graphs-content-container">
           <div className="graph-row">
             <div className="graph-container map-container">
-              <Map
-                handleLocations={(locations) => this.handleLocations(locations)}
-              />
+              {this.state.isLoading ? (
+                <img
+                  src={loadingGIF}
+                  className="loading-animation"
+                  alt="loading..."
+                ></img>
+              ) : (
+                <Map
+                  handleLocations={(locations) =>
+                    this.handleLocations(locations)
+                  }
+                />
+              )}
             </div>
             <div className="graph-container bargraph-container">
               <h4 className="graph-heading">Stacked Bar Graph</h4>
               <div className="bargraph-container1">
-                <BarGraph weatherData={this.state.weatherData} />
+                {this.state.isLoading ? (
+                  <img
+                    src={loadingGIF}
+                    className="loading-animation"
+                    alt="loading..."
+                  ></img>
+                ) : (
+                  <BarGraph weatherData={this.state.weatherData} />
+                )}
               </div>
             </div>
             <div className="graph-container linegraph-container">
@@ -67,7 +88,15 @@ class Main extends React.Component {
                 Stacked Line Chart (Avg Rainfall vs Month)
               </h4>
               <div className="linegraph-container1">
-                <LineGraph weatherData={this.state.weatherData} />
+                {this.state.isLoading ? (
+                  <img
+                    src={loadingGIF}
+                    className="loading-animation"
+                    alt="loading..."
+                  ></img>
+                ) : (
+                  <LineGraph weatherData={this.state.weatherData} />
+                )}
               </div>
             </div>
           </div>
@@ -77,13 +106,29 @@ class Main extends React.Component {
                 ScatterPlot (Rainfall vs Evaporation)
               </h4>
               <div className="scatterplot-container1">
-                <ScatterPlot weatherData={this.state.weatherData} />
+                {this.state.isLoading ? (
+                  <img
+                    src={loadingGIF}
+                    className="loading-animation"
+                    alt="loading..."
+                  ></img>
+                ) : (
+                  <ScatterPlot weatherData={this.state.weatherData} />
+                )}
               </div>
             </div>
             <div className="graph-container parallelplot-container">
               <h4 className="graph-heading">Parallel Coordinates Plot</h4>
               <div className="parallelplot-container1">
-                <ParallelPlot weatherData={this.state.weatherData} />
+                {this.state.isLoading ? (
+                  <img
+                    src={loadingGIF}
+                    className="loading-animation-pcp"
+                    alt="loading..."
+                  ></img>
+                ) : (
+                  <ParallelPlot weatherData={this.state.weatherData} />
+                )}
               </div>
             </div>
           </div>
