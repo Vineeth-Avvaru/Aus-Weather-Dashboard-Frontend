@@ -55,19 +55,22 @@ class Main extends React.Component {
         <div className="graphs-content-container">
           <div className="graph-row">
             <div className="graph-container map-container">
-              {this.state.isLoading ? (
-                <img
-                  src={loadingGIF}
-                  className="loading-animation"
-                  alt="loading..."
-                ></img>
-              ) : (
-                <Map
-                  handleLocations={(locations) =>
-                    this.handleLocations(locations)
-                  }
-                />
-              )}
+              <h4 className="graph-heading">Australia Map</h4>
+              <div className="map-container1">
+                {this.state.isLoading ? (
+                  <img
+                    src={loadingGIF}
+                    className="loading-animation"
+                    alt="loading..."
+                  ></img>
+                ) : (
+                  <Map
+                    handleLocations={(locations) =>
+                      this.handleLocations(locations)
+                    }
+                  />
+                )}
+              </div>
             </div>
             <div className="graph-container bargraph-container">
               <h4 className="graph-heading">Stacked Bar Graph</h4>
