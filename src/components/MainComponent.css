@@ -74,3 +74,12 @@ h3 {
   align-items: center;
   justify-content: center;
 }
+
+.loading-animation {
+  width: 50%;
+  height: 50%;
+}
+.loading-animation-pcp {
+  width: 25%;
+  height: 50%;
+}
