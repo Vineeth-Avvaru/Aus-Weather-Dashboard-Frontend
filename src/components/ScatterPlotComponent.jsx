@@ -133,6 +133,7 @@ class ScatterPlot extends React.Component {
       .call(d3.brush().extent([[width * 0.05, 0], [width*0.88, height*0.775]]).on("brush", brushed).on("end", brushended));
 
       function brushed(event) {
+        selectedDots.clear()
         var s = event.selection,
             x0 = s[0][0],
             y0 = s[0][1],
@@ -142,7 +143,7 @@ class ScatterPlot extends React.Component {
         graph.selectAll('circle')
         .attr('class', function (d,i) {
                 if (xScale(evaporation[i]) >= x0 && xScale(evaporation[i]) <= x0 + dx && yScale(rainfall[i]) >= y0 && yScale(rainfall[i]) <= y0 + dy)
-                     { console.log(i)
+                     { 
                        selectedDots.add(index[i]);
                        return 'dot-selected-scatter-plot'; }
                 
