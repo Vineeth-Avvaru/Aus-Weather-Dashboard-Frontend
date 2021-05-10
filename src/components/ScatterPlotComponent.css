@@ -1,0 +1,5 @@
+.dot-selected-scatter-plot {
+    opacity: 1 !important;
+    stroke: black;
+    stroke-width: 0.2px;
+  }

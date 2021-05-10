@@ -1,6 +1,7 @@
 import React from "react";
 import LineGraph from "./LineGraphComponent";
 import * as d3 from "d3";
+import "./BarGraphComponent.css"
 
 class BarGraph extends React.Component {
   constructor(props) {
@@ -39,6 +40,7 @@ class BarGraph extends React.Component {
       // "Uluru",
       // "Hobart",
     ];
+    let selectedBars=[];
     let rainfall = {};
 
     filteredData.forEach((element) => {
@@ -90,7 +92,7 @@ class BarGraph extends React.Component {
 
     graph
       .append("g")
-      .attr("transform", "translate(0," + height * 0.78 + ")")
+      .attr("transform", "translate("+ -1 +","+ height * 0.78 + ")")
       .call(d3.axisBottom(xScale).ticks(5))
       .append("text")
       .attr("y", height * 0.15)
@@ -103,7 +105,7 @@ class BarGraph extends React.Component {
 
     graph
       .append("g")
-      .attr("transform", "translate(" + width * 0.05 + ",0 )")
+      .attr("transform", "translate(" + width * 0.048 + ",0 )")
       .call(d3.axisLeft(yScale))
       .append("text")
       .attr("transform", "rotate(-90)")
@@ -121,17 +123,71 @@ class BarGraph extends React.Component {
       .enter()
       .append("rect")
       .attr("class", "bar-bar-graph")
+      .on('mouseover',onMouseOver)
+      .on("mouseout", onMouseOut)
+      .on("click", onClick)
       .attr("x", width * 0.05)
       .attr("y", 0)
       .attr("height", 0)
       .attr("width", function (d, i) {
         return xScale(annual_rainfall[i]);
       })
-      .attr("fill", "#3498DB")
       .attr("y", function (d, i) {
         return yScale(d);
       })
       .attr("height", yScale.bandwidth);
+
+      function onMouseOver(d,i) {
+        if(d3.select(this).attr("class")!='bar-select-bar-graph'){
+        d3.select(this).attr('class', 'bar-highlight-bar-graph');
+        }
+        d3.select(this)
+            .transition()
+            .duration(200)
+            .attr('width', xScale(rainfall[i])+2);
+ 
+        graph.append("text")
+            .attr('class', 'text-highlight-bar-graph')
+            .attr('x', function() {
+                return xScale(rainfall[i])+40;
+            })
+            .attr('y', function() {
+               return yScale(i)+15;
+            })
+            .attr('fill','#b92938')
+            .text(function() {
+                return d3.format(".0f")(rainfall[i]);
+            });
+          
+    }
+
+    function onMouseOut(d, i) {
+      if(d3.select(this).attr("class")!='bar-select-bar-graph'){
+      d3.select(this).attr('class', 'bar-bar-graph');
+      d3.select(this)
+          .transition()
+          .duration(200)
+          .attr('width', xScale(rainfall[i])-2);
+      }
+      d3.selectAll('.text-highlight-bar-graph')
+          .remove()
+      
+    }
+    function onClick(d, i) {
+      if(d3.select(this).attr("class")=='bar-select-bar-graph'){
+        const index = selectedBars.indexOf(i);
+        if (index > -1) {
+          selectedBars.splice(index, 1);
+        }
+        d3.select(this).attr('class', 'bar-bar-graph');
+      }
+      else{
+        selectedBars.push(i);
+        d3.select(this).attr('class', 'bar-select-bar-graph');
+      }
+      
+      console.log(selectedBars)
+    }
   }
   render() {
     return <div className="bar-graph"></div>;

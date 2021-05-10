@@ -4,7 +4,7 @@ import BarGraph from "./BarGraphComponent";
 import LineGraph from "./LineGraphComponent";
 import ScatterPlot from "./ScatterPlotComponent";
 import ParallelPlot from "./ParallelPlotComponent";
-import loadingGIF from "../assets/hippo.gif";
+import loadingGIF from "../assets/mickey.gif";
 import "./MainComponent.css";
 
 class Main extends React.Component {
@@ -17,6 +17,7 @@ class Main extends React.Component {
       selectedIDs: [],
       interactiveMode: false,
       isLoading: true,
+      
     };
     this.handleLocations = this.handleLocations.bind(this);
     this.handleYears = this.handleYears.bind(this);
