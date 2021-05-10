@@ -1,0 +1,12 @@
+.text-highlight-bar-graph {
+    font-family : "sans-serif";
+    font-size : "14px";
+}
+.bar-select-bar-graph,
+.bar-highlight-bar-graph{
+    fill : #b92938;
+}
+
+.bar-bar-graph{
+fill : #3498DB;
+}
