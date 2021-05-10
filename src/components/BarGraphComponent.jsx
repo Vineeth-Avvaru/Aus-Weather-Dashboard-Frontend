@@ -144,7 +144,7 @@ class BarGraph extends React.Component {
         d3.select(this)
             .transition()
             .duration(200)
-            .attr('width', xScale(rainfall[i])+2);
+            .attr('width', xScale(rainfall[i])+0.5);
  
         graph.append("text")
             .attr('class', 'text-highlight-bar-graph')
@@ -164,11 +164,12 @@ class BarGraph extends React.Component {
     function onMouseOut(d, i) {
       if(d3.select(this).attr("class")!='bar-select-bar-graph'){
       d3.select(this).attr('class', 'bar-bar-graph');
+      }
       d3.select(this)
           .transition()
           .duration(200)
-          .attr('width', xScale(rainfall[i])-2);
-      }
+          .attr('width', xScale(rainfall[i])-0.5);
+      
       d3.selectAll('.text-highlight-bar-graph')
           .remove()
       
