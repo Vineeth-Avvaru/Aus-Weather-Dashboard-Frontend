@@ -54,9 +54,10 @@ class Main extends React.Component {
     });
   }
 
-  highlightDataPoints(idArrray) {
+  highlightDataPoints(idArray) {
+    console.log(this.state.selectedIDs);
     this.setState({
-      selectedIDs: [...idArrray],
+      selectedIDs: [...idArray],
       interactiveMode: true,
     });
   }
@@ -135,7 +136,12 @@ class Main extends React.Component {
                     alt="loading..."
                   ></img>
                 ) : (
-                  <ScatterPlot weatherData={this.state.weatherData} />
+                  <ScatterPlot
+                    weatherData={this.state.weatherData}
+                    highlightDataPoints={(brushedPoints) => {
+                      this.highlightDataPoints(brushedPoints);
+                    }}
+                  />
                 )}
               </div>
             </div>
