@@ -81,6 +81,7 @@ class Main extends React.Component {
                   ></img>
                 ) : (
                   <Map
+                  weatherData={this.state.weatherData}
                     handleLocations={(locations) =>
                       this.handleLocations(locations)
                     }
@@ -138,6 +139,7 @@ class Main extends React.Component {
                 ) : (
                   <ScatterPlot
                     weatherData={this.state.weatherData}
+                    state = {this.state}
                     highlightDataPoints={(brushedPoints) => {
                       this.highlightDataPoints(brushedPoints);
                     }}

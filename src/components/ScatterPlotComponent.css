@@ -1,3 +1,7 @@
+.dot-unselected-scatter-plot {
+  opacity: 0.3 !important;
+  stroke: gray !important;
+}
 .dot-selected-scatter-plot {
     opacity: 1 !important;
     stroke: black;
