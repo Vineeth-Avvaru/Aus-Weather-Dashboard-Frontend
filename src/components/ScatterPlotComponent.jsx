@@ -146,9 +146,6 @@ class ScatterPlot extends React.Component {
                      { 
                        selectedDots.add(index[i]);
                        return 'dot-selected-scatter-plot'; }
-                  else{
-                    return 'dot-unselected-scatter-plot';
-                  }
                 
             });
 
