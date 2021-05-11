@@ -5,9 +5,6 @@ import "./BarGraphComponent.css";
 class BarGraph extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      years: [],
-    };
     this.drawBarGraph = this.drawBarGraph.bind(this);
     this.yearHandler = this.yearHandler.bind(this);
   }
