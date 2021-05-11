@@ -4,7 +4,7 @@ import BarGraph from "./BarGraphComponent";
 import LineGraph from "./LineGraphComponent";
 import ScatterPlot from "./ScatterPlotComponent";
 import ParallelPlot from "./ParallelPlotComponent";
-import loadingGIF from "../assets/hippo.gif";
+import loadingGIF from "../assets/mickey.gif";
 import "./MainComponent.css";
 
 class Main extends React.Component {
@@ -17,6 +17,7 @@ class Main extends React.Component {
       selectedIDs: [],
       interactiveMode: false,
       isLoading: true,
+      
     };
     this.handleLocations = this.handleLocations.bind(this);
     this.handleYears = this.handleYears.bind(this);
@@ -47,17 +48,15 @@ class Main extends React.Component {
   }
 
   handleYears(years) {
-    console.log(this.state.years);
     this.setState({
       years: [...years],
       interactiveMode: true,
     });
   }
 
-  highlightDataPoints(idArray) {
-    console.log(this.state.selectedIDs);
+  highlightDataPoints(idArrray) {
     this.setState({
-      selectedIDs: [...idArray],
+      selectedIDs: [...idArrray],
       interactiveMode: true,
     });
   }
@@ -98,11 +97,7 @@ class Main extends React.Component {
                     alt="loading..."
                   ></img>
                 ) : (
-                  <BarGraph
-                    weatherData={this.state.weatherData}
-                    years={this.state.years}
-                    updateYears={(years) => this.handleYears(years)}
-                  />
+                  <BarGraph weatherData={this.state.weatherData} />
                 )}
               </div>
             </div>
@@ -136,12 +131,7 @@ class Main extends React.Component {
                     alt="loading..."
                   ></img>
                 ) : (
-                  <ScatterPlot
-                    weatherData={this.state.weatherData}
-                    highlightDataPoints={(brushedPoints) => {
-                      this.highlightDataPoints(brushedPoints);
-                    }}
-                  />
+                  <ScatterPlot weatherData={this.state.weatherData} />
                 )}
               </div>
             </div>
