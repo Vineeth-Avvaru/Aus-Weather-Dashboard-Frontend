@@ -35,19 +35,10 @@ class BarGraph extends React.Component {
     let weatherData = this.props.weatherData;
     let columns = weatherData.columns;
     let yearIndex = columns.indexOf("year");
-    // let locationIndex = columns.indexOf("Location");
     let filteredData = weatherData.data.filter(
       (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017
     );
     let rainfallIndex = columns.indexOf("Rainfall");
-    // let locations = [
-    //   "Perth",
-    //   "Adelaide",
-    //   "Canberra",
-    //   "Brisbane",
-    //   // "Uluru",
-    //   // "Hobart",
-    // ];
     let selectedBars = [];
     let rainfall = {};
 
@@ -202,6 +193,7 @@ class BarGraph extends React.Component {
     }
   }
   render() {
+    console.log("Bar Rendering");
     return <div className="bar-graph"></div>;
   }
 }
