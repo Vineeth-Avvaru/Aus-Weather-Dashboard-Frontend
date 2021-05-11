@@ -1,5 +1,6 @@
 import React from "react";
 import * as d3 from "d3";
+// import "./ScatterPlotComponent.css";
 
 class ScatterPlot extends React.Component {
   constructor(props) {
@@ -24,6 +25,8 @@ class ScatterPlot extends React.Component {
     let weatherData = this.props.weatherData;
     let columns = weatherData.columns;
     let yearIndex = columns.indexOf("year");
+    let indexIndex = columns.indexOf("index");
+    const selectedDots = new Set();
     let filteredData = weatherData.data.filter(
       (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017
     );
@@ -33,6 +36,7 @@ class ScatterPlot extends React.Component {
     let rainfall = [];
     let evaporation = [];
     let cluster = [];
+    let index = [];
     filteredData.forEach((element) => {
       rainfall.push(element[rainfallIndex]);
       evaporation.push(element[evaporationIndex]);
@@ -105,12 +109,13 @@ class ScatterPlot extends React.Component {
       .attr("font-size", "14px")
       .text("Rainfall");
 
-    graph
+    let dots = graph
       .append("g")
       .selectAll("dot")
       .data(evaporation)
       .enter()
       .append("circle")
+      .attr("class", "dot-scatter-plot")
       .attr("cx", function (d, i) {
         return xScale(evaporation[i]);
       })
@@ -120,7 +125,53 @@ class ScatterPlot extends React.Component {
       .attr("r", 1.5)
       .style("fill", function (d, i) {
         return color(cluster[i]);
+      })
+      .style("opacity", 0.7);
+
+    graph.append("g").call(
+      d3
+        .brush()
+        .extent([
+          [width * 0.05, 0],
+          [width * 0.88, height * 0.775],
+        ])
+        .on("brush", brushed)
+        .on("end", brushended)
+    );
+
+    function brushed(event) {
+      selectedDots.clear();
+      var s = event.selection,
+        x0 = s[0][0],
+        y0 = s[0][1],
+        dx = s[1][0] - x0,
+        dy = s[1][1] - y0;
+      // console.log(s);
+      graph.selectAll("circle").attr("class", function (d, i) {
+        if (
+          xScale(evaporation[i]) >= x0 &&
+          xScale(evaporation[i]) <= x0 + dx &&
+          yScale(rainfall[i]) >= y0 &&
+          yScale(rainfall[i]) <= y0 + dy
+        ) {
+          selectedDots.add(index[i]);
+          return "dot-selected-scatter-plot";
+        }
       });
+
+      console.log(selectedDots);
+    }
+
+    function brushended(event) {
+      if (!event.selection) {
+        console.log(selectedDots);
+        graph
+          .selectAll("circle")
+          .attr("class", "dot-scatter-plot")
+          .style("opacity", 0.7);
+        selectedDots.clear();
+      }
+    }
   }
   render() {
     return <div className="scatter-plot"></div>;

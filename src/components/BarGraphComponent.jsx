@@ -1,11 +1,16 @@
 import React from "react";
 import LineGraph from "./LineGraphComponent";
 import * as d3 from "d3";
+// import "./BarGraphComponent.css";
 
 class BarGraph extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      years: [],
+    };
     this.drawBarGraph = this.drawBarGraph.bind(this);
+    this.yearHandler = this.yearHandler.bind(this);
   }
 
   componentDidMount() {
@@ -22,6 +27,13 @@ class BarGraph extends React.Component {
     }
   }
 
+  yearHandler(d, year) {
+    console.log(year);
+  }
+
+  // shouldComponentUpdate(nextProps) {
+  //   return 0;
+  // }
   drawBarGraph() {
     let weatherData = this.props.weatherData;
     let columns = weatherData.columns;
@@ -39,6 +51,7 @@ class BarGraph extends React.Component {
       // "Uluru",
       // "Hobart",
     ];
+    let selectedBars = [];
     let rainfall = {};
 
     filteredData.forEach((element) => {
@@ -90,7 +103,7 @@ class BarGraph extends React.Component {
 
     graph
       .append("g")
-      .attr("transform", "translate(0," + height * 0.78 + ")")
+      .attr("transform", "translate(" + -1 + "," + height * 0.78 + ")")
       .call(d3.axisBottom(xScale).ticks(5))
       .append("text")
       .attr("y", height * 0.15)
@@ -121,6 +134,16 @@ class BarGraph extends React.Component {
       .enter()
       .append("rect")
       .attr("class", "bar-bar-graph")
+      .attr("id", (d, i) => {
+        return "bar" + d.toString();
+      })
+      .on("mouseover", onMouseOver)
+      .on("mouseout", onMouseOut)
+      .on("click", (d, i) => {
+        // console.log(d);
+        this.yearHandler(d, i);
+        onClick(d, i);
+      })
       .attr("x", width * 0.05)
       .attr("y", 0)
       .attr("height", 0)
@@ -132,6 +155,55 @@ class BarGraph extends React.Component {
         return yScale(d);
       })
       .attr("height", yScale.bandwidth);
+
+    function onMouseOver(d, i) {
+      if (d3.select(this).attr("class") != "bar-select-bar-graph") {
+        d3.select(this).attr("class", "bar-highlight-bar-graph");
+      }
+      d3.select(this)
+        .transition()
+        .duration(200)
+        .attr("width", xScale(rainfall[i]) + 0.5);
+
+      graph
+        .append("text")
+        .attr("class", "text-highlight-bar-graph")
+        .attr("x", function () {
+          return xScale(rainfall[i]) + 40;
+        })
+        .attr("y", function () {
+          return yScale(i) + 15;
+        })
+        .attr("fill", "#b92938")
+        .text(function () {
+          return d3.format(".0f")(rainfall[i]);
+        });
+    }
+
+    function onMouseOut(d, i) {
+      if (d3.select(this).attr("class") != "bar-select-bar-graph") {
+        d3.select(this).attr("class", "bar-bar-graph");
+      }
+      d3.select(this)
+        .transition()
+        .duration(200)
+        .attr("width", xScale(rainfall[i]) - 0.5);
+
+      d3.selectAll(".text-highlight-bar-graph").remove();
+    }
+    function onClick(d, i) {
+      console.log("bar" + i);
+      if (d3.select("#bar" + i).attr("class") == "bar-select-bar-graph") {
+        const index = selectedBars.indexOf(i);
+        if (index > -1) {
+          selectedBars.splice(index, 1);
+        }
+        d3.select("#bar" + i).attr("class", "bar-bar-graph");
+      } else {
+        selectedBars.push(i);
+        d3.select("#bar" + i).attr("class", "bar-select-bar-graph");
+      }
+    }
   }
   render() {
     return <div className="bar-graph"></div>;
