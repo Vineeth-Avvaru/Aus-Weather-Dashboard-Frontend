@@ -15,9 +15,10 @@ class ScatterPlot extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    this.drawScatterPlot();
     if (
-      JSON.stringify(this.props.weatherData) !==
-      JSON.stringify(prevProps.weatherData)
+      JSON.stringify(this.props.years) !==
+      JSON.stringify(prevProps.years)
     ) {
       this.drawScatterPlot();
     }
@@ -28,21 +29,35 @@ class ScatterPlot extends React.Component {
   }
 
   drawScatterPlot() {
+    let years = this.props.state.years;
     let weatherData = this.props.weatherData;
     let columns = weatherData.columns;
     let yearIndex = columns.indexOf("year");
     let indexIndex = columns.indexOf("index");
     const selectedDots = new Set();
-    let filteredData = weatherData.data.filter(
-      (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017
-    );
+    let filteredData=undefined;
+
+    if(years.length!=0){
+      filteredData = weatherData.data.filter(
+        (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017 && years.includes(item[yearIndex].toString())
+      );
+    }
+    else {
+      filteredData = weatherData.data.filter(
+        (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017 
+      );
+    }
+
+    
     let evaporationIndex = columns.indexOf("Evaporation");
     let rainfallIndex = columns.indexOf("Rainfall");
     let clusterIndex = columns.indexOf("cluster");
+
     let rainfall = [];
     let evaporation = [];
     let cluster = [];
     let index = [];
+    
     filteredData.forEach((element) => {
       rainfall.push(element[rainfallIndex]);
       evaporation.push(element[evaporationIndex]);
@@ -64,7 +79,8 @@ class ScatterPlot extends React.Component {
       },
       width = width_cont - margin.left - margin.right,
       height = height_cont - margin.top - margin.bottom;
-
+    
+    d3.selectAll(".scatter-plot").select('svg').remove();
     const svg = d3
       .select(".scatter-plot")
       .append("svg")
@@ -146,7 +162,10 @@ class ScatterPlot extends React.Component {
           brushed(event);
           this.brushDataPoints(selectedDots);
         })
-        .on("end", brushended)
+        .on("end", (event) => {
+          brushended(event);
+          this.brushDataPoints(selectedDots);
+        })
     );
 
     function brushed(event) {
@@ -167,18 +186,21 @@ class ScatterPlot extends React.Component {
           selectedDots.add(index[i]);
           return "dot-selected-scatter-plot";
         }
+        else {return "dot-unselected-scatter-plot";}
       });
       // console.log(selectedDots);
     }
 
     function brushended(event) {
+      selectedDots.clear();
       if (!event.selection) {
         // console.log(selectedDots);
         graph
           .selectAll("circle")
           .attr("class", "dot-scatter-plot")
           .style("opacity", 0.7);
-        selectedDots.clear();
+        
+       
       }
     }
   }
