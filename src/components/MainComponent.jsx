@@ -7,6 +7,8 @@ import ParallelPlot from "./ParallelPlotComponent";
 import loadingGIF from "../assets/hippo.gif";
 import "./MainComponent.css";
 
+import * as d3 from "d3";
+
 class Main extends React.Component {
   constructor(props) {
     super(props);
@@ -17,7 +19,8 @@ class Main extends React.Component {
       selectedIDs: [],
       interactiveMode: false,
       isLoading: true,
-      interactedFrom:''
+      interactedFrom:'',
+      colorMap: d3.scaleOrdinal(d3.schemeCategory10)
     };
     this.handleLocations = this.handleLocations.bind(this);
     this.handleYears = this.handleYears.bind(this);
@@ -48,12 +51,14 @@ class Main extends React.Component {
   }
 
   handleYears(years) {
-    console.log(this.state.years);
+    
     this.setState({
       years: [...years],
+      selectedIDs:[],
       interactiveMode: true,
       interactedFrom: 'BarGraph'
     });
+    console.log(this.state.years);
   }
 
   highlightDataPoints(idArray) {
@@ -161,7 +166,8 @@ class Main extends React.Component {
                     alt="loading..."
                   ></img>
                 ) : (
-                  <ParallelPlot weatherData={this.state.weatherData} />
+                  <ParallelPlot weatherData={this.state.weatherData}
+                   state = {this.state}/>
                 )}
               </div>
             </div>
