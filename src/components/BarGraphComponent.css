@@ -10,3 +10,11 @@
 .bar-bar-graph{
 fill : #3498DB;
 }
+
+.reset-button{
+    position: absolute !important;
+    left:64%;
+    width:4%;
+    min-width:0px !important;
+    font-size: 0.6rem !important;
+    }

@@ -1,12 +1,17 @@
 import React from "react";
 import * as d3 from "d3";
 import "./BarGraphComponent.css";
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+
+
 
 class BarGraph extends React.Component {
   constructor(props) {
     super(props);
     this.drawBarGraph = this.drawBarGraph.bind(this);
     this.yearHandler = this.yearHandler.bind(this);
+    this.resetSelction = this.resetSelction.bind(this);
   }
 
   componentDidMount() {
@@ -23,13 +28,19 @@ class BarGraph extends React.Component {
     }
   }
 
-  yearHandler(d, year) {
-    
+  yearHandler( year) {
     let years = this.props.years;
     let yearIndex = years.indexOf(year);
     if (yearIndex === -1) years.push(year);
     else years.splice(yearIndex, 1);
     this.props.updateYears(years);
+    
+  }
+  resetSelction(reset=false){
+    if(reset){
+      d3.selectAll(".bar-select-bar-graph").attr("class","bar-bar-graph")
+      this.props.updateYears([])
+    }
   }
 
   drawBarGraph() {
@@ -129,7 +140,7 @@ class BarGraph extends React.Component {
       .on("mouseover", onMouseOver)
       .on("mouseout", onMouseOut)
       .on("click", (d, i) => {
-        this.yearHandler(d, i);
+        this.yearHandler( i);
         onClick(d, i);
       })
       .attr("x", width * 0.05)
@@ -192,10 +203,24 @@ class BarGraph extends React.Component {
 
       // console.log(selectedBars);
     }
+    // const useStyles = makeStyles((theme) => ({
+    //   root: {
+    //     '& > *': {
+    //       margin: theme.spacing(1),
+    //     },
+    //   },
+    // }));
+    // const classes = useStyles();
   }
+  
   render() {
+    
     console.log("Bar Rendering");
-    return <div className="bar-graph"></div>;
+    return <div className="bar-graph">
+      <Button className="reset-button" variant="outlined" onClick={() => { this.resetSelction(true) }}>Reset</Button>
+      
+      
+    </div>;
   }
 }
 
