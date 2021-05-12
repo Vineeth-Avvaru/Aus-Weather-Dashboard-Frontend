@@ -169,6 +169,7 @@ class ScatterPlot extends React.Component {
     );
 
     function brushed(event) {
+      selectedDots.clear();
       var s = event.selection,
         x0 = s[0][0],
         y0 = s[0][1],
