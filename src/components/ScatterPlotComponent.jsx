@@ -148,7 +148,7 @@ class ScatterPlot extends React.Component {
       .style("fill", function (d, i) {
         return color(cluster[i]);
       })
-      .style("opacity", 0.7);
+      .style("opacity", 0.8);
 
     graph.append("g").call(
       d3
@@ -198,8 +198,7 @@ class ScatterPlot extends React.Component {
          
         graph
           .selectAll("circle")
-          .attr("class", "dot-scatter-plot")
-          .style("opacity", 0.7);
+          .attr("class", "dot-scatter-plot");
           selectedDots.clear();
       }
     }
