@@ -61,11 +61,14 @@ class LineGraph extends React.Component {
     let rainfallIndex = columns.indexOf("Rainfall");
     let monthIndex = columns.indexOf("month");
 
-    let avgRainfall = [];
+    let avgRainfallLoc = [];
+    let maxAvgRainfall = 0// Math.round(Math.max(...avgRainfall) * 100) / 100;
+    const arrAvg = arr => arr.reduce((a,b) => a + b, 0) / arr.length
     for (let i = 0; i < locations.length; i++) {
       let locationData = filteredData.filter(
         (item) => item[locationIndex] === locations[i]
       );
+      let avgRainfall = [];
       for (let j = 1; j <= 12; j++) {
         let val = 0;
         for (let k = 0; k < locationData.length; k++) {
@@ -74,8 +77,10 @@ class LineGraph extends React.Component {
         }
         avgRainfall.push(val / years.length);
       }
+      avgRainfallLoc.push(arrAvg(avgRainfall))
+      maxAvgRainfall=Math.max(maxAvgRainfall,Math.max(...avgRainfall))
     }
-    let maxAvgRainfall = Math.round(Math.max(...avgRainfall) * 100) / 100;
+    
 
     let width_cont = document.getElementsByClassName("linegraph-container1")[0]
       .offsetWidth;
@@ -122,9 +127,7 @@ class LineGraph extends React.Component {
     const xScale = d3
       .scaleBand()
       .domain(
-        filteredData.map((d, i) => {
-          return d[monthIndex];
-        })
+        [1,2,3,4,5,6,7,8,9,10,11,12]
       )
       .range([width * 0.05, width * 0.85])
       .padding(0.1);
@@ -172,6 +175,8 @@ class LineGraph extends React.Component {
       .attr("font-size", "14px")
       .text("Avg Rainfall");
 
+      
+
     for (let i = 0; i < locations.length; i++) {
       let locationData = filteredData.filter(
         (item) => item[locationIndex] === locations[i]
@@ -186,9 +191,13 @@ class LineGraph extends React.Component {
           if (locationData[k][monthIndex] === j)
             val += locationData[k][rainfallIndex];
         }
+        if(val==0){
+          val = avgRainfallLoc[i];
+        }
         graphData.avgRainfall.push(val / years.length);
+        
       }
-      
+      //console.log(graphData.avgRainfall)
       graph
         .append("path")
         .datum(graphData.month)
@@ -200,9 +209,11 @@ class LineGraph extends React.Component {
           d3
             .line()
             .x(function (d) {
+              
               return xScale(d) + xScale.bandwidth() / 2;
             })
             .y(function (d) {
+              
               return yScale(graphData.avgRainfall[d - 1]);
             })
         );
