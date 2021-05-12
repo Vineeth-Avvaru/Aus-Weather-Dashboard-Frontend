@@ -24,6 +24,7 @@ class BarGraph extends React.Component {
   }
 
   yearHandler(d, year) {
+    
     let years = this.props.years;
     let yearIndex = years.indexOf(year);
     if (yearIndex === -1) years.push(year);

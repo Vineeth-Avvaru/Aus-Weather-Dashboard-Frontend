@@ -128,7 +128,8 @@ class Main extends React.Component {
                     alt="loading..."
                   ></img>
                 ) : (
-                  <LineGraph weatherData={this.state.weatherData} />
+                  <LineGraph weatherData={this.state.weatherData}
+                  state = {this.state} />
                 )}
               </div>
             </div>
