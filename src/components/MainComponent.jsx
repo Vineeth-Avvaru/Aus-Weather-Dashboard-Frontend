@@ -19,7 +19,7 @@ class Main extends React.Component {
       selectedIDs: [],
       interactiveMode: false,
       isLoading: true,
-      interactedFrom:'',
+      interactedFrom:"",
       colorMap: d3.scaleOrdinal(d3.schemeCategory10)
     };
     this.handleLocations = this.handleLocations.bind(this);
@@ -54,9 +54,9 @@ class Main extends React.Component {
     
     this.setState({
       years: [...years],
-      selectedIDs:[],
+      selectedIDs: [],
       interactiveMode: true,
-      interactedFrom: 'BarGraph'
+      interactedFrom: "BarGraph",
     });
     console.log(this.state.years);
   }
@@ -66,7 +66,7 @@ class Main extends React.Component {
     this.setState({
       selectedIDs: [...idArray],
       interactiveMode: true,
-      interactedFrom:'ScatterPlot'
+      interactedFrom: "ScatterPlot",
     });
     console.log(this.state.selectedIDs);
   }
@@ -94,6 +94,7 @@ class Main extends React.Component {
                     handleLocations={(locations) =>
                       this.handleLocations(locations)
                     }
+                    locations={this.state.locations}
                   />
                 )}
               </div>
@@ -128,8 +129,10 @@ class Main extends React.Component {
                     alt="loading..."
                   ></img>
                 ) : (
-                  <LineGraph weatherData={this.state.weatherData}
-                  state = {this.state} />
+                  <LineGraph 
+                    weatherData={this.state.weatherData}
+                    state={this.state}
+                     />
                 )}
               </div>
             </div>
@@ -149,7 +152,7 @@ class Main extends React.Component {
                 ) : (
                   <ScatterPlot
                     weatherData={this.state.weatherData}
-                    state = {this.state}
+                    state={this.state}
                     highlightDataPoints={(brushedPoints) => {
                       this.highlightDataPoints(brushedPoints);
                     }}
@@ -167,8 +170,10 @@ class Main extends React.Component {
                     alt="loading..."
                   ></img>
                 ) : (
-                  <ParallelPlot weatherData={this.state.weatherData}
-                   state = {this.state}/>
+                  <ParallelPlot 
+                  weatherData={this.state.weatherData}
+                   state={this.state}
+                   />
                 )}
               </div>
             </div>

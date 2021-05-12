@@ -19,12 +19,12 @@ ReactDOM.render(
   // <React.StrictMode>
   //   <App />
   // </React.StrictMode>,
-  <React.StrictMode>
+  <React.Fragment>
    <ThemeProvider  theme={theme}>
    <CssBaseline />
    <App />
  </ThemeProvider >
- </React.StrictMode>,
+ </React.Fragment>,
   document.getElementById('root')
 );
 
