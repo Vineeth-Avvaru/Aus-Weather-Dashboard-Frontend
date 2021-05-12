@@ -175,11 +175,15 @@ class ParallelPlot extends React.Component {
           })
           .on("drag", function (event, d) {
             dragging[d] = Math.min(width, Math.max(0, event.x));
+            foreground
+              .attr("d", path)
+              .style("fill", "none")
+              .style("stroke", "lightgrey")
+              .style("opacity", 0.5);
             features.sort(function (a, b) {
               return position(a) - position(b);
             });
             x.domain(features);
-            foreground.attr("d", path);
             g.attr("transform", function (d) {
               return "translate(" + position(d) + ")";
             });
@@ -190,7 +194,15 @@ class ParallelPlot extends React.Component {
               "transform",
               "translate(" + x(d) + ")"
             );
-            transition(foreground).attr("d", path);
+            transition(foreground, 300)
+              .attr("d", path)
+              .style("fill", "none")
+              .style("stroke", function (d, i) {
+                return colores_google(
+                  weatherData.data[i][indexMap.get("cluster")]
+                );
+              })
+              .style("opacity", 0.8);
             background
               .attr("d", path)
               .transition()
@@ -223,6 +235,27 @@ class ParallelPlot extends React.Component {
       .text(function (d) {
         return d;
       });
+    g.append("g")
+      .attr("class", "brush")
+      .each(function (d) {
+        d3.select(this).call(
+          (y[d].brush = d3
+            .brushY()
+            .extent([
+              [-8, 0],
+              [8, height],
+            ])
+            .on("start", function (event) {
+              brushstart(event);
+            })
+            .on("brush", function (event) {
+              brush(event);
+            }))
+        );
+      })
+      .selectAll("rect")
+      .attr("x", -8)
+      .attr("width", 16);
 
     function position(d) {
       var v = dragging[d];
@@ -249,6 +282,49 @@ class ParallelPlot extends React.Component {
         })
       );
     }
+    var extents = features.map(function (p) {
+      return [0, 0];
+    });
+    function brushstart(event) {
+      event.sourceEvent.stopPropagation();
+    }
+    function brush(event) {
+      for (var i = 0; i < features.length; ++i) {
+        if (event.target === y[features[i]].brush) {
+          console.log(y[features[i]]);
+          extents[i] = event.selection.map(
+            y[features[i]].invert,
+            y[features[i]]
+          );
+        }
+      }
+      foreground.style("display", function (d) {
+        return features.every(function (p, i) {
+          if (extents[i][0] === 0 && extents[i][1] === 0) {
+            return true;
+          }
+          return extents[i][1] <= d[p] && d[p] <= extents[i][0];
+        })
+          ? null
+          : "none";
+      });
+    }
+    // function brush(event) {
+    //   var actives = features.filter(function (p) {
+    //       console.log(y[p].brush);
+    //       return !y[p].brush.empty();
+    //     }),
+    //     extents = actives.map(function (p) {
+    //       return y[p].brush.extent();
+    //     });
+    //   foreground.style("display", function (d) {
+    //     return actives.every(function (p, i) {
+    //       return extents[i][0] <= d[p] && d[p] <= extents[i][1];
+    //     })
+    //       ? null
+    //       : "none";
+    //   });
+    // }
   }
   render() {
     return <div className="parallel-plot"></div>;
