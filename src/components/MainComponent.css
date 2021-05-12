@@ -23,10 +23,10 @@ h3 {
 }
 
 .graph-container {
-  border: 1px solid lightgray;
+  /* border: 1px solid lightgray; */
   margin: 10px;
   border-radius: 10px;
-  background-color: white;
+  /* background-color: white; */
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
@@ -51,7 +51,7 @@ h3 {
 }
 
 .graphs-content-container {
-  background-color: #eeeeee;
+  /* background-color: #eeeeee; */
 }
 
 .linegraph-container1,

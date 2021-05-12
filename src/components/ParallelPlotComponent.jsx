@@ -219,6 +219,7 @@ class ParallelPlot extends React.Component {
       .style("stroke", function (d, i) {
         return colores_google(filteredData[i][indexMap.get("cluster")]);
       })
+      .attr("stroke-width",2)
       .style("opacity",0.7);
 
     // Add a group element for each dimension.

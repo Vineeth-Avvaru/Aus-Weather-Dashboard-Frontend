@@ -1,7 +1,8 @@
 .background path {
   fill: none;
-  stroke: #ddd;
+  stroke: gray;
   shape-rendering: crispEdges;
+  opacity:0.05
 }
 
 .foreground path {
