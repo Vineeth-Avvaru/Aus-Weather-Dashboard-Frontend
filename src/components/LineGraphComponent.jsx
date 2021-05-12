@@ -12,6 +12,9 @@ class LineGraph extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    if(this.props.state.interactedFrom == 'BarGraph'){
+      this.drawLineGraph();
+    }
     if (
       JSON.stringify(this.props.weatherData) !==
       JSON.stringify(prevProps.weatherData)
@@ -34,6 +37,11 @@ class LineGraph extends React.Component {
       (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017
     );
 
+    let years = this.props.state.years;
+    if(years.length==0){
+      years = ["2009","2010", "2011", "2012", "2013", "2014","2015","2016"];
+    }
+
     let locations = [
       "Perth",
       "Adelaide",
@@ -42,11 +50,12 @@ class LineGraph extends React.Component {
       // "Uluru",
       // "Hobart",
     ];
-    let years = [2010, 2011, 2012, 2013, 2014];
+    //let years = [2010, 2011, 2012, 2013, 2014];
+    //console.log(years,filteredData[10][yearIndex])
     filteredData = filteredData.filter(
       (item) =>
         locations.indexOf(item[locationIndex]) !== -1 &&
-        years.indexOf(item[yearIndex]) !== -1
+        years.indexOf(item[yearIndex].toString()) !== -1
     );
 
     let rainfallIndex = columns.indexOf("Rainfall");
@@ -96,7 +105,7 @@ class LineGraph extends React.Component {
       ];
       return colores_g[n % colores_g.length];
     }
-
+    d3.selectAll(".line-graph").select('svg').remove();
     const svg = d3
       .select(".line-graph")
       .append("svg")
@@ -119,7 +128,7 @@ class LineGraph extends React.Component {
       )
       .range([width * 0.05, width * 0.85])
       .padding(0.1);
-
+      xScale.domain(xScale.domain().sort(d3.ascending))
     graph
       .append("g")
       .attr("transform", "translate(0," + height * 0.78 + ")")
@@ -179,6 +188,7 @@ class LineGraph extends React.Component {
         }
         graphData.avgRainfall.push(val / years.length);
       }
+      
       graph
         .append("path")
         .datum(graphData.month)
