@@ -59,6 +59,8 @@ class ParallelPlot extends React.Component {
     let datapoints = features_data[0].map((x, i) =>
       features_data.map((x) => x[i])
     );
+    console.log(features_data)
+    console.log(datapoints)
     indexMap.set("cluster", columns.indexOf("cluster"));
     function colores_google(n) {
       var colores_g = [
@@ -223,6 +225,27 @@ class ParallelPlot extends React.Component {
       .text(function (d) {
         return d;
       });
+    g.append("g")
+      .attr("class", "brush")
+      .each(function (d) {
+        d3.select(this).call(
+          (y[d].brush = d3
+            .brushY()
+            .extent([
+              [-8, 10],
+              [8, height-20],
+            ])
+            .on("start", function (event) {
+              brushstart(event);
+            })
+            .on("brush", function (event) {
+              brush(event);
+            }))
+        );
+      })
+      .selectAll("rect")
+      .attr("x", -8)
+      .attr("width", 16);
 
     function position(d) {
       var v = dragging[d];
@@ -248,6 +271,49 @@ class ParallelPlot extends React.Component {
             ];
         })
       );
+    }
+    var extents = features.map(function (p) {
+      return [0, 0];
+    });
+    function brushstart(event) {
+      event.sourceEvent.stopPropagation();
+    }
+    function brush(event) {
+      for (var i = 0; i < features.length; ++i) {
+        if (event.target === y[features[i]].brush) {
+
+          if(i==0){
+            let eachBand = y[features[i]].step();
+            let index1 = Math.floor((event.selection[0]/ eachBand)-eachBand*0.01);
+            let index2 = Math.floor((event.selection[1] / eachBand)-eachBand*0.01)-1;
+            let len = y[features[i]].domain().length;
+            let val1 = y[features[i]].domain()[index1];
+            let val2 = y[features[i]].domain()[index2];
+
+            extents[i] = [len+1-val1,len+1-val2]
+  
+          }
+          else{
+            extents[i] = event.selection.map(
+              y[features[i]].invert,
+              y[features[i]]
+            );
+          }
+          //console.log(extents[i]);
+        }
+      }
+      foreground.style("display", function (d) {
+        
+        return features.every(function (p, i) {
+
+          if (extents[i][0] === 0 && extents[i][1] === 0) {
+            return true;
+          }
+          return extents[i][1] <= d[i] && d[i] <= extents[i][0];
+        })
+          ? null
+          : "none";
+      });
     }
   }
   render() {
