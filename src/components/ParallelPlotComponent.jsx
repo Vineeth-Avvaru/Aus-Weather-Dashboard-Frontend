@@ -83,7 +83,7 @@ class ParallelPlot extends React.Component {
     
     let index = [];
     if(years.length!==0 || selectedIDs.length!==0){
-      d3.selectAll(".brush").selectAll(".selection").remove()
+      d3.selectAll(".brush").selectAll(".selection").style("display","none")
       if(years.length!==0){
       filteredData = weatherData.sampled_data.filter(
         (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017 && years.includes(item[yearIndex].toString())
