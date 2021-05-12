@@ -59,8 +59,7 @@ class ParallelPlot extends React.Component {
     let datapoints = features_data[0].map((x, i) =>
       features_data.map((x) => x[i])
     );
-    console.log(features_data)
-    console.log(datapoints)
+
     indexMap.set("cluster", columns.indexOf("cluster"));
     function colores_google(n) {
       var colores_g = [
