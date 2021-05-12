@@ -17,6 +17,7 @@ class Main extends React.Component {
       selectedIDs: [],
       interactiveMode: false,
       isLoading: true,
+      interactedFrom:''
     };
     this.handleLocations = this.handleLocations.bind(this);
     this.handleYears = this.handleYears.bind(this);
@@ -51,15 +52,18 @@ class Main extends React.Component {
     this.setState({
       years: [...years],
       interactiveMode: true,
+      interactedFrom: 'BarGraph'
     });
   }
 
   highlightDataPoints(idArray) {
-    console.log(this.state.selectedIDs);
+    
     this.setState({
       selectedIDs: [...idArray],
       interactiveMode: true,
+      interactedFrom:'ScatterPlot'
     });
+    console.log(this.state.selectedIDs);
   }
 
   render() {

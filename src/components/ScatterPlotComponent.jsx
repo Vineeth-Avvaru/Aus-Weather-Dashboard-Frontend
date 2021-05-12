@@ -15,10 +15,13 @@ class ScatterPlot extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    this.drawScatterPlot();
+    if(this.props.state.interactedFrom != 'ScatterPlot'){
+      this.drawScatterPlot();
+    }
+    
     if (
-      JSON.stringify(this.props.years) !==
-      JSON.stringify(prevProps.years)
+      JSON.stringify(this.props.weatherData) !==
+      JSON.stringify(prevProps.weatherData)
     ) {
       this.drawScatterPlot();
     }
@@ -47,17 +50,13 @@ class ScatterPlot extends React.Component {
         (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017 
       );
     }
-
-    
     let evaporationIndex = columns.indexOf("Evaporation");
     let rainfallIndex = columns.indexOf("Rainfall");
     let clusterIndex = columns.indexOf("cluster");
-
     let rainfall = [];
     let evaporation = [];
     let cluster = [];
     let index = [];
-    
     filteredData.forEach((element) => {
       rainfall.push(element[rainfallIndex]);
       evaporation.push(element[evaporationIndex]);
@@ -79,8 +78,8 @@ class ScatterPlot extends React.Component {
       },
       width = width_cont - margin.left - margin.right,
       height = height_cont - margin.top - margin.bottom;
-    
-    d3.selectAll(".scatter-plot").select('svg').remove();
+
+      d3.selectAll(".scatter-plot").select('svg').remove();
     const svg = d3
       .select(".scatter-plot")
       .append("svg")
@@ -160,16 +159,16 @@ class ScatterPlot extends React.Component {
         ])
         .on("brush", (event) => {
           brushed(event);
-          this.brushDataPoints(selectedDots);
+          
         })
         .on("end", (event) => {
+          //this.brushDataPoints(selectedDots);
           brushended(event);
           this.brushDataPoints(selectedDots);
         })
     );
 
     function brushed(event) {
-      selectedDots.clear();
       var s = event.selection,
         x0 = s[0][0],
         y0 = s[0][1],
@@ -192,15 +191,15 @@ class ScatterPlot extends React.Component {
     }
 
     function brushended(event) {
-      selectedDots.clear();
+
+      //console.log('!!!',selectedDots);
       if (!event.selection) {
-        // console.log(selectedDots);
+         
         graph
           .selectAll("circle")
           .attr("class", "dot-scatter-plot")
           .style("opacity", 0.7);
-        
-       
+          selectedDots.clear();
       }
     }
   }
