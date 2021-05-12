@@ -220,7 +220,7 @@ class ParallelPlot extends React.Component {
         return colores_google(filteredData[i][indexMap.get("cluster")]);
       })
       .attr("stroke-width",2)
-      .style("opacity",0.7);
+      .style("opacity",0.5);
 
     // Add a group element for each dimension.
     var g = graph
@@ -349,7 +349,7 @@ class ParallelPlot extends React.Component {
       for (var i = 0; i < features.length; ++i) {
         if (event.target === y[features[i]].brush) {
 
-          if(i===0){
+          if(features[i]==='month'){
             let eachBand = y[features[i]].step();
             let index1 = Math.floor((event.selection[0]/ eachBand)-eachBand*0.01);
             let index2 = Math.floor((event.selection[1] / eachBand)-eachBand*0.01)-1;
