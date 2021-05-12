@@ -15,7 +15,7 @@ class ScatterPlot extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(this.props.state.interactedFrom != 'ScatterPlot'){
+    if(this.props.state.interactedFrom !== 'ScatterPlot'){
       this.drawScatterPlot();
     }
     
@@ -40,7 +40,7 @@ class ScatterPlot extends React.Component {
     const selectedDots = new Set();
     let filteredData=undefined;
 
-    if(years.length!=0){
+    if(years.length!==0){
       filteredData = weatherData.data.filter(
         (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017 && years.includes(item[yearIndex].toString())
       );
@@ -103,7 +103,7 @@ class ScatterPlot extends React.Component {
       .domain([-1, d3.max(rainfall)])
       .range([height * 0.78, height * 0.05]);
 
-    var color = d3.scaleOrdinal(d3.schemeCategory10);
+    var color = this.props.state.colorMap //d3.scaleOrdinal(d3.schemeCategory10);
 
     graph
       .append("g")

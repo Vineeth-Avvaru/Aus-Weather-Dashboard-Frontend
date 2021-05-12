@@ -14,6 +14,7 @@ class ParallelPlot extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    this.drawParallelPlot();
     if (
       JSON.stringify(this.props.weatherData) !==
       JSON.stringify(prevProps.weatherData)
@@ -49,18 +50,46 @@ class ParallelPlot extends React.Component {
     for (let i = 0; i < features.length; i++) {
       indexMap.set(features[i], columns.indexOf(features[i]));
     }
-    let features_data = weatherData.data;
+    let years = this.props.state.years;
+    let selectedIDs = this.props.state.selectedIDs;
+    let yearIndex = columns.indexOf("year");
+    let indexIndex = columns.indexOf("index");
+    let filteredData = weatherData.data;
+    if(years.length!==0){
+      filteredData = weatherData.data.filter(
+        (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017 && years.includes(item[yearIndex].toString())
+      );
+    }
+    if(selectedIDs.length!==0){
+      filteredData = filteredData.filter(
+        (item) => selectedIDs.includes(item[indexIndex])
+      );
+    }
+    let features_data = filteredData;
+    
+
     features_data = features_data[0].map((_, colIndex) =>
       features_data.map((row) => row[colIndex])
     );
+    
     features_data = features_data.filter(
       (item, index) => [...indexMap.values()].indexOf(index) !== -1
     );
     let datapoints = features_data[0].map((x, i) =>
       features_data.map((x) => x[i])
     );
+    
 
+    // filteredData.forEach((element) => {
+    //   rainfall.push(element[rainfallIndex]);
+    //   evaporation.push(element[evaporationIndex]);
+    //   cluster.push(element[clusterIndex]);
+    //   index.push(element[indexIndex]);
+    // });
+
+    //console.log(d3.scaleOrdinal(d3.schemeCategory10))
     indexMap.set("cluster", columns.indexOf("cluster"));
+    var color = this.props.state.colorMap //d3.scaleOrdinal(d3.schemeCategory10);
     function colores_google(n) {
       var colores_g = [
         "#3366cc",
@@ -74,7 +103,8 @@ class ParallelPlot extends React.Component {
         "#b82e2e",
         "#316395",
       ];
-      return colores_g[n % colores_g.length];
+      //return colores_g[n % colores_g.length];
+      return color(n);
     }
 
     let width_cont = document.getElementsByClassName(
@@ -92,6 +122,7 @@ class ParallelPlot extends React.Component {
       width = width_cont - margin.left - margin.right,
       height = height_cont - margin.top - margin.bottom;
 
+    d3.selectAll(".parallel-plot").select('svg').remove();
     var x = d3
         .scalePoint()
         .range([width * 0.05, width * 0.85])
@@ -151,7 +182,7 @@ class ParallelPlot extends React.Component {
       .append("path")
       .attr("d", path)
       .style("stroke", function (d, i) {
-        return colores_google(weatherData.data[i][indexMap.get("cluster")]);
+        return colores_google(filteredData[i][indexMap.get("cluster")]);
       });
 
     // Add a group element for each dimension.
@@ -281,7 +312,7 @@ class ParallelPlot extends React.Component {
       for (var i = 0; i < features.length; ++i) {
         if (event.target === y[features[i]].brush) {
 
-          if(i==0){
+          if(i===0){
             let eachBand = y[features[i]].step();
             let index1 = Math.floor((event.selection[0]/ eachBand)-eachBand*0.01);
             let index2 = Math.floor((event.selection[1] / eachBand)-eachBand*0.01)-1;
@@ -316,6 +347,7 @@ class ParallelPlot extends React.Component {
     }
   }
   render() {
+    console.log('parallel plot rendering')
     return <div className="parallel-plot"></div>;
   }
 }
