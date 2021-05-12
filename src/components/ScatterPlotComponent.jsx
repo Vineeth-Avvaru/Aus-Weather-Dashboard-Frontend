@@ -41,12 +41,12 @@ class ScatterPlot extends React.Component {
     let filteredData=undefined;
 
     if(years.length!==0){
-      filteredData = weatherData.data.filter(
+      filteredData = weatherData.sampled_data.filter(
         (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017 && years.includes(item[yearIndex].toString())
       );
     }
     else {
-      filteredData = weatherData.data.filter(
+      filteredData = weatherData.sampled_data.filter(
         (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017 
       );
     }
@@ -144,7 +144,7 @@ class ScatterPlot extends React.Component {
       .attr("cy", function (d, i) {
         return yScale(rainfall[i]);
       })
-      .attr("r", 1.5)
+      .attr("r", 2)
       .style("fill", function (d, i) {
         return color(cluster[i]);
       })
