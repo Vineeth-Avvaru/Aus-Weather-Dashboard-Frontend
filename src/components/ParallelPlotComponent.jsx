@@ -54,17 +54,19 @@ class ParallelPlot extends React.Component {
     let selectedIDs = this.props.state.selectedIDs;
     let yearIndex = columns.indexOf("year");
     let indexIndex = columns.indexOf("index");
-    let filteredData = weatherData.data;
-    if(years.length!==0){
-      filteredData = weatherData.data.filter(
-        (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017 && years.includes(item[yearIndex].toString())
-      );
-    }
-    if(selectedIDs.length!==0){
-      filteredData = filteredData.filter(
-        (item) => selectedIDs.includes(item[indexIndex])
-      );
-    }
+    let filteredData = weatherData.sampled_data;
+    // if(years.length!==0){
+    //   filteredData = weatherData.sampled_data.filter(
+    //     (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017 && years.includes(item[yearIndex].toString())
+    //   );
+    // }
+    // if(selectedIDs.length!==0){
+    //   filteredData = filteredData.filter(
+    //     (item) => selectedIDs.includes(item[indexIndex])
+    //   );
+    // }
+
+
     let features_data = filteredData;
     
 
@@ -79,7 +81,39 @@ class ParallelPlot extends React.Component {
       features_data.map((x) => x[i])
     );
     
+    let index = [];
+    if(years.length!==0 || selectedIDs.length!==0){
+      d3.selectAll(".brush").selectAll(".selection").remove()
+      if(years.length!==0){
+      filteredData = weatherData.sampled_data.filter(
+        (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017 && years.includes(item[yearIndex].toString())
+      );
+    }
+    if(selectedIDs.length!==0){
+      filteredData = filteredData.filter(
+        (item) => selectedIDs.includes(item[indexIndex])
+      );
+    }
+    filteredData.forEach((element) => {
+      index.push(element[indexIndex]);
+    });
 
+    let foreground = d3.select('.foreground')
+    //console.log(index)
+    foreground
+      .selectAll("path")
+      .style("display", function (d, i) {
+        //console.log(d,i)
+        if(index.includes(i)){
+          //console.log(d,i)
+        }
+          return index.includes(i) ? null: "none";
+      })
+    
+
+    return;
+  }
+   
     // filteredData.forEach((element) => {
     //   rainfall.push(element[rainfallIndex]);
     //   evaporation.push(element[evaporationIndex]);
@@ -152,7 +186,7 @@ class ParallelPlot extends React.Component {
       if (feature !== "month") {
         y[feature] = d3
           .scaleLinear()
-          .domain([d3.min(features_data[i]), d3.max(features_data[i])])
+          .domain([d3.min(features_data[i]), d3.max(features_data[i])]).nice()
           .range([height * 0.93, height * 0.05]);
       } else {
         y[feature] = d3
@@ -161,6 +195,7 @@ class ParallelPlot extends React.Component {
           .range([height * 0.93, height * 0.05]);
       }
     }
+    y['month'].domain(y['month'].domain().sort(d3.ascending))
 
     // Add grey background lines for context.
     background = graph
@@ -183,7 +218,8 @@ class ParallelPlot extends React.Component {
       .attr("d", path)
       .style("stroke", function (d, i) {
         return colores_google(filteredData[i][indexMap.get("cluster")]);
-      });
+      })
+      .style("opacity",0.7);
 
     // Add a group element for each dimension.
     var g = graph
