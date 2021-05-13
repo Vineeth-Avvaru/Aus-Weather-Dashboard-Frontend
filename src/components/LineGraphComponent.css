@@ -1,0 +1,11 @@
+.line-graph-legend-container {
+  display: flex;
+  position: relative;
+}
+
+.line-graph-legend {
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  top: 0;
+}
