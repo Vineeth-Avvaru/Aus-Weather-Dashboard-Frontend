@@ -239,31 +239,15 @@ class ParallelPlot extends React.Component {
       .attr("d", path);
 
     // Add blue foreground lines for focus.
-    // foreground = graph
-    //   .append("g")
-    //   .attr("class", "foreground")
-    //   .selectAll("path")
-    //   .data(datapoints)
-    //   .enter()
-    //   .append("path")
-    //   .attr("d", path)
-    //   .style("stroke", function (d, i) {
-    //     return colores_google(filteredData[i][indexMap.get("cluster")]);
-    //   })
-    //   .attr("stroke-width",2)
-    //   .style("opacity",0.5);
-
-   let  foreground = graph
+    let foreground = graph
       .append("g")
-      .selectAll('data_path')
+      .attr("class", "foreground")
+      .selectAll("path")
       .data(datapoints)
       .enter()
       .append("path")
-      .attr("class", "foreground")
       .attr("d", path)
-      .style("fill","none")
       .style("stroke", function (d, i) {
-        //console.log(d,i)
         return colores_google(filteredData[i][indexMap.get("cluster")]);
       })
       .attr("stroke-width",2)
