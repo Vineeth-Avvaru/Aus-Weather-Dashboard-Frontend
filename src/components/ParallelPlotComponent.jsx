@@ -170,27 +170,27 @@ class ParallelPlot extends React.Component {
     d3.selectAll(".parallel-plot").select('svg').remove();
     var x = d3
         .scalePoint()
-        .range([width * 0.05, width * 0.85])
+        .range([width * 0.05, width * 0.95])
         .padding(0.1)
         .domain(features),
       y = {},
       dragging = {};
 
-    var background, foreground;
+    
 
     var svg = d3
       .select(".parallel-plot")
       .append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      // .append("g")
+      // .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     var graph = svg
       .append("g")
       .attr(
         "transform",
-        "translate(" + width_cont * 0.1 + "," + height_cont * 0.05 + ")"
+        "translate(" + width_cont * 0.03 + "," + height_cont * 0.09 + ")"
       );
     for (let i = 0; i < features.length; i++) {
       let feature = features[i];
@@ -198,18 +198,38 @@ class ParallelPlot extends React.Component {
         y[feature] = d3
           .scaleLinear()
           .domain([d3.min(features_data[i]), d3.max(features_data[i])]).nice()
-          .range([height * 0.93, height * 0.05]);
+          .range([height * 0.9, height * 0.05]);
       } else {
         y[feature] = d3
           .scaleBand()
           .domain(features_data[i])
-          .range([height * 0.93, height * 0.05]);
+          .range([height * 0.9, height * 0.05]);
       }
     }
     y['month'].domain(y['month'].domain().sort(d3.ascending))
 
+    function path(d) {
+      return d3.line()(
+        features.map((feature, i) => {
+          var v = dragging[feature];
+          var tx = v == null ? x(feature) : v;
+          if (feature !== "month")
+            return [tx, y[feature](d[original_features.indexOf(feature)])];
+          else
+            return [
+              tx,
+              y[feature](d[original_features.indexOf(feature)]) +
+                y[feature].bandwidth() / 2,
+            ];
+        })
+      );
+    }
+    var extents = features.map(function (p) {
+      return [0, 0];
+    });
+
     // Add grey background lines for context.
-    background = graph
+    let background = graph
       .append("g")
       .attr("class", "background")
       .selectAll("path")
@@ -219,23 +239,40 @@ class ParallelPlot extends React.Component {
       .attr("d", path);
 
     // Add blue foreground lines for focus.
-    foreground = graph
+    // foreground = graph
+    //   .append("g")
+    //   .attr("class", "foreground")
+    //   .selectAll("path")
+    //   .data(datapoints)
+    //   .enter()
+    //   .append("path")
+    //   .attr("d", path)
+    //   .style("stroke", function (d, i) {
+    //     return colores_google(filteredData[i][indexMap.get("cluster")]);
+    //   })
+    //   .attr("stroke-width",2)
+    //   .style("opacity",0.5);
+
+   let  foreground = graph
       .append("g")
-      .attr("class", "foreground")
-      .selectAll("path")
+      .selectAll('data_path')
       .data(datapoints)
       .enter()
       .append("path")
+      .attr("class", "foreground")
       .attr("d", path)
+      .style("fill","none")
       .style("stroke", function (d, i) {
+        //console.log(d,i)
         return colores_google(filteredData[i][indexMap.get("cluster")]);
       })
       .attr("stroke-width",2)
       .style("opacity",0.5);
 
+
     // Add a group element for each dimension.
     var g = graph
-      .selectAll(".feature")
+      .selectAll(".dimension")
       .data(features)
       .enter()
       .append("g")
@@ -250,22 +287,26 @@ class ParallelPlot extends React.Component {
             return { x: x(d) };
           })
           .on("start", function (event, d) {
-            dragging[d] = x(d);
+            dragging[d] = this.__origin__ = x(d);
+            this.__dragged__ = false;
             background.attr("visibility", "hidden");
           })
           .on("drag", function (event, d) {
-            dragging[d] = Math.min(width, Math.max(0, event.x));
+            dragging[d] = Math.min(width, Math.max(0, this.__origin__ += event.dx));
+            foreground.attr("d", path);
             features.sort(function (a, b) {
               return position(a) - position(b);
             });
             x.domain(features);
-            foreground.attr("d", path);
+            
             g.attr("transform", function (d) {
               return "translate(" + position(d) + ")";
             });
+            this.__dragged__ = true;
           })
           .on("end", function (event, d) {
             delete dragging[d];
+            if(this.__dragged__){
             transition(d3.select(this)).attr(
               "transform",
               "translate(" + x(d) + ")"
@@ -277,16 +318,30 @@ class ParallelPlot extends React.Component {
               .delay(500)
               .duration(0)
               .attr("visibility", null);
+            }
+            delete this.__dragged__;
+            delete this.__origin__;
+
+
           })
       );
-
+    let featureUnits ={
+      "month" : "Month",
+      "Rainfall" : "Rainfall (mm)",
+      "Evaporation" : "Evaporation (mm)",
+      "Sunshine" : "Sunshine (hrs)",
+      "WindGustSpeed" : "Wind Gust (km/h)",
+      "Humidity" : "Humidity (percent)",
+      "Pressure" : "Pressure (hPa)",
+      "Temperature" : "Temperature (C)"
+    }
     // Add an axis and title.
     g.append("g")
       .attr("class", "blah")
       .each(function (d) {
         d3.select(this).call(
           d3
-            .axisLeft(y[d])
+            .axisLeft().scale(y[d])
             .tickFormat((d) => {
               return d;
             })
@@ -297,11 +352,11 @@ class ParallelPlot extends React.Component {
       .style("text-anchor", "middle")
       .attr("y", -1)
       .attr("text-anchor", "middle")
-      .attr("fill", "black")
+      .attr("fill", "white")
       .attr("font-family", "sans-serif")
       .attr("font-size", "14px")
       .text(function (d) {
-        return d;
+        return featureUnits[d];
       });
     g.append("g")
       .attr("class", "brush")
@@ -334,25 +389,8 @@ class ParallelPlot extends React.Component {
       return g.transition().duration(500);
     }
 
-    function path(d) {
-      return d3.line()(
-        features.map((feature, i) => {
-          var v = dragging[feature];
-          var tx = v == null ? x(feature) : v;
-          if (feature !== "month")
-            return [tx, y[feature](d[original_features.indexOf(feature)])];
-          else
-            return [
-              tx,
-              y[feature](d[original_features.indexOf(feature)]) +
-                y[feature].bandwidth() / 2,
-            ];
-        })
-      );
-    }
-    var extents = features.map(function (p) {
-      return [0, 0];
-    });
+    
+    
     function brushstart(event) {
       event.sourceEvent.stopPropagation();
     }
@@ -377,7 +415,7 @@ class ParallelPlot extends React.Component {
               y[features[i]]
             );
           }
-          //console.log(extents[i]);
+         // console.log(extents[i]);
         }
       }
       foreground.style("display", function (d) {
@@ -387,7 +425,7 @@ class ParallelPlot extends React.Component {
           if (extents[i][0] === 0 && extents[i][1] === 0) {
             return true;
           }
-          return extents[i][1] <= d[i] && d[i] <= extents[i][0];
+          return extents[i][1] <= d[original_features.indexOf(features[i])] && d[original_features.indexOf(features[i])] <= extents[i][0];
         })
           ? null
           : "none";
