@@ -87,7 +87,7 @@ class ParallelPlot extends React.Component {
     );
     
     let index = [];
-    if(years.length!==0 || selectedIDs.length!==0 || locations.length!=0){
+    if(years.length!==0 || selectedIDs.length!==0 || locations.length!=0 || this.props.state.interactedFrom !==""){
       d3.selectAll(".brush").selectAll(".selection").style("display","none")
       if(years.length!==0){
       filteredData = weatherData.sampled_data.filter(
