@@ -71,7 +71,7 @@ class Main extends React.Component {
       interactiveMode: true,
       interactedFrom: "ScatterPlot",
     });
-    console.log(this.state.selectedIDs);
+    //console.log(this.state.selectedIDs);
   }
 
   render() {
