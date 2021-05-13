@@ -14,7 +14,9 @@ class ParallelPlot extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    this.drawParallelPlot();
+    if(this.props.state.interactedFrom !== "ParallelPlot" ){
+      this.drawParallelPlot();
+    }
     if (
       JSON.stringify(this.props.weatherData) !==
       JSON.stringify(prevProps.weatherData)
@@ -51,10 +53,13 @@ class ParallelPlot extends React.Component {
       indexMap.set(features[i], columns.indexOf(features[i]));
     }
     let years = this.props.state.years;
+    let locations = this.props.state.locations;
     let selectedIDs = this.props.state.selectedIDs;
     let yearIndex = columns.indexOf("year");
     let indexIndex = columns.indexOf("index");
+    let locationIndex = columns.indexOf("Location");
     let filteredData = weatherData.sampled_data;
+
     // if(years.length!==0){
     //   filteredData = weatherData.sampled_data.filter(
     //     (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017 && years.includes(item[yearIndex].toString())
@@ -82,7 +87,7 @@ class ParallelPlot extends React.Component {
     );
     
     let index = [];
-    if(years.length!==0 || selectedIDs.length!==0){
+    if(years.length!==0 || selectedIDs.length!==0 || locations.length!=0){
       d3.selectAll(".brush").selectAll(".selection").style("display","none")
       if(years.length!==0){
       filteredData = weatherData.sampled_data.filter(
@@ -92,6 +97,12 @@ class ParallelPlot extends React.Component {
     if(selectedIDs.length!==0){
       filteredData = filteredData.filter(
         (item) => selectedIDs.includes(item[indexIndex])
+      );
+    }
+    if(locations.length>0){
+      filteredData = filteredData.filter(
+        (item) =>
+        locations.includes(item[locationIndex])
       );
     }
     filteredData.forEach((element) => {
