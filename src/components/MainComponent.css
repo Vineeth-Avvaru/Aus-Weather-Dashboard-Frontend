@@ -4,7 +4,7 @@
 }
 
 .heading-container {
-  background-color: #4056a1;
+  background-color: #414c50;
   height: 6vh;
   display: flex;
   justify-content: center;
@@ -73,7 +73,7 @@ h3 {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   color: #eee;
-  background-color: #4056a1;
+  background-color: #414c50;
   display: flex;
   align-items: center;
   justify-content: center;

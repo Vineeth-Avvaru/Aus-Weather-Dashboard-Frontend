@@ -78,7 +78,7 @@ class Main extends React.Component {
     return (
       <div className="main-container">
         <div className="heading-container">
-          <h3>Visualization Final Project</h3>
+          <h3>Australia Weather Visual Analytics</h3>
         </div>
         <div className="graphs-content-container">
           <div className="graph-row">
@@ -104,7 +104,7 @@ class Main extends React.Component {
               </div>
             </div>
             <div className="graph-container bargraph-container">
-              <h4 className="graph-heading">Stacked Bar Graph</h4>
+              <h4 className="graph-heading">Bar Graph</h4>
               <div className="bargraph-container1">
                 {this.state.isLoading ? (
                   <img
@@ -124,7 +124,7 @@ class Main extends React.Component {
             </div>
             <div className="graph-container linegraph-container">
               <h4 className="graph-heading">
-                Stacked Line Chart (Avg Rainfall vs Month)
+                Stacked Line Chart
               </h4>
               <div className="linegraph-container1">
                 {this.state.isLoading ? (
@@ -145,7 +145,7 @@ class Main extends React.Component {
           <div className="graph-row">
             <div className="graph-container scatterplot-container">
               <h4 className="graph-heading">
-                ScatterPlot (Rainfall vs Evaporation)
+                Scatter Plot 
               </h4>
               <div className="scatterplot-container1">
                 {this.state.isLoading ? (
