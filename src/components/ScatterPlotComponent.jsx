@@ -106,10 +106,11 @@ class ScatterPlot extends React.Component {
     const xScale = d3
       .scaleLinear()
       .domain([0, d3.max(evaporation)])
-      .range([width * 0.05, width * 0.85]);
+      .range([width * 0.05, width * 0.85]).nice();
     const yScale = d3
       .scaleLinear()
-      .domain([-1, d3.max(rainfall)])
+      .domain([-1 , d3.max(rainfall)])
+      
       .range([height * 0.78, height * 0.05]);
 
     var color = this.props.state.colorMap //d3.scaleOrdinal(d3.schemeCategory10);
@@ -120,25 +121,25 @@ class ScatterPlot extends React.Component {
       .call(d3.axisBottom(xScale))
       .append("text")
       .attr("y", height * 0.15)
-      .attr("x", width / 2)
+      .attr("x", width / 2.5)
       .attr("text-anchor", "middle")
-      .attr("fill", "black")
+      .attr("fill", "white")
       .attr("font-family", "sans-serif")
       .attr("font-size", "14px")
-      .text("Evaporation");
+      .text("Evaporation (mm)");
     graph
       .append("g")
       .attr("transform", "translate(" + width * 0.05 + ",0 )")
-      .call(d3.axisLeft(yScale))
+      .call(d3.axisLeft(yScale).ticks(9))
       .append("text")
       .attr("transform", "rotate(-90)")
       .attr("y", -width * 0.11)
-      .attr("x", -height / 2)
+      .attr("x", -height / 2.3)
       .attr("text-anchor", "middle")
-      .attr("fill", "black")
+      .attr("fill", "white")
       .attr("font-family", "sans-serif")
       .attr("font-size", "14px")
-      .text("Rainfall");
+      .text("Rainfall (mm)");
 
     let dots = graph
       .append("g")

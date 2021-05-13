@@ -114,7 +114,7 @@ class BarGraph extends React.Component {
       .padding(0.3);
     const xScale = d3
       .scaleLinear()
-      .domain([d3.min(annual_rainfall) / 1.3, d3.max(annual_rainfall) * 1.05])
+      .domain([d3.min(annual_rainfall) / 1.3, d3.max(annual_rainfall) * 1.05]).nice()
       .range([width * 0.05, width * 0.85]);
 
     graph
@@ -123,9 +123,9 @@ class BarGraph extends React.Component {
       .call(d3.axisBottom(xScale).ticks(5))
       .append("text")
       .attr("y", height * 0.15)
-      .attr("x", width / 2)
+      .attr("x", width / 2.5)
       .attr("text-anchor", "middle")
-      .attr("fill", "black")
+      .attr("fill", "white")
       .attr("font-family", "sans-serif")
       .attr("font-size", "14px")
       .text("Annual Rainfall (mm)");
@@ -139,10 +139,10 @@ class BarGraph extends React.Component {
       .attr("y", -width * 0.11)
       .attr("x", -height / 2)
       .attr("text-anchor", "middle")
-      .attr("fill", "black")
+      .attr("fill", "white")
       .attr("font-family", "sans-serif")
       .attr("font-size", "14px")
-      .text("Years");
+      .text("Year");
 
     graph
       .selectAll(".bar")

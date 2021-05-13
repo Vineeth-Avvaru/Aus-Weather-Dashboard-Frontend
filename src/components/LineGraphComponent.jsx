@@ -147,7 +147,7 @@ class LineGraph extends React.Component {
       .attr("y", height * 0.15)
       .attr("x", width / 2)
       .attr("text-anchor", "middle")
-      .attr("fill", "black")
+      .attr("fill", "white")
       .attr("font-family", "sans-serif")
       .attr("font-size", "14px")
       .text("Month");
@@ -173,10 +173,10 @@ class LineGraph extends React.Component {
       .attr("y", -width * 0.07)
       .attr("x", -height / 2)
       .attr("text-anchor", "middle")
-      .attr("fill", "black")
+      .attr("fill", "white")
       .attr("font-family", "sans-serif")
       .attr("font-size", "14px")
-      .text("Avg Rainfall");
+      .text("Avg Rainfall (mm)");
 
       
 
