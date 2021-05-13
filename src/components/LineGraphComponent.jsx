@@ -1,5 +1,7 @@
 import React from "react";
 import * as d3 from "d3";
+import "./LineGraphComponent.css";
+
 class LineGraph extends React.Component {
   constructor(props) {
     super(props);
@@ -12,7 +14,10 @@ class LineGraph extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(this.props.state.interactedFrom === 'BarGraph' || this.props.state.interactedFrom === "Map"){
+    if (
+      this.props.state.interactedFrom === "BarGraph" ||
+      this.props.state.interactedFrom === "Map"
+    ) {
       this.drawLineGraph();
     }
     if (
@@ -38,21 +43,21 @@ class LineGraph extends React.Component {
     );
 
     let years = this.props.state.years;
-    if(years.length==0){
-      years = ["2009","2010", "2011", "2012", "2013", "2014","2015","2016"];
+    if (years.length == 0) {
+      years = ["2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016"];
     }
 
     let locations = this.props.state.locations;
-    if(locations.length===0){
-       locations = [
-      "Perth",
-      "Adelaide",
-      "Canberra",
-      "Brisbane",
-      // "Uluru",
-      // "Hobart",
-    ];
-  }
+    if (locations.length === 0) {
+      locations = [
+        "Perth",
+        "Adelaide",
+        "Canberra",
+        "Brisbane",
+        // "Uluru",
+        // "Hobart",
+      ];
+    }
     //let years = [2010, 2011, 2012, 2013, 2014];
     //console.log(years,filteredData[10][yearIndex])
     filteredData = filteredData.filter(
@@ -65,8 +70,8 @@ class LineGraph extends React.Component {
     let monthIndex = columns.indexOf("month");
 
     let avgRainfallLoc = [];
-    let maxAvgRainfall = 0// Math.round(Math.max(...avgRainfall) * 100) / 100;
-    const arrAvg = arr => arr.reduce((a,b) => a + b, 0) / arr.length
+    let maxAvgRainfall = 0; // Math.round(Math.max(...avgRainfall) * 100) / 100;
+    const arrAvg = (arr) => arr.reduce((a, b) => a + b, 0) / arr.length;
     for (let i = 0; i < locations.length; i++) {
       let locationData = filteredData.filter(
         (item) => item[locationIndex] === locations[i]
@@ -80,10 +85,9 @@ class LineGraph extends React.Component {
         }
         avgRainfall.push(val / years.length);
       }
-      avgRainfallLoc.push(arrAvg(avgRainfall))
-      maxAvgRainfall=Math.max(maxAvgRainfall,Math.max(...avgRainfall))
+      avgRainfallLoc.push(arrAvg(avgRainfall));
+      maxAvgRainfall = Math.max(maxAvgRainfall, Math.max(...avgRainfall));
     }
-    
 
     let width_cont = document.getElementsByClassName("linegraph-container1")[0]
       .offsetWidth;
@@ -113,7 +117,7 @@ class LineGraph extends React.Component {
       ];
       return colores_g[n % colores_g.length];
     }
-    d3.selectAll(".line-graph").select('svg').remove();
+    d3.selectAll(".line-graph").select("svg").remove();
     const svg = d3
       .select(".line-graph")
       .append("svg")
@@ -129,12 +133,10 @@ class LineGraph extends React.Component {
 
     const xScale = d3
       .scaleBand()
-      .domain(
-        [1,2,3,4,5,6,7,8,9,10,11,12]
-      )
+      .domain([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
       .range([width * 0.05, width * 0.85])
       .padding(0.1);
-      xScale.domain(xScale.domain().sort(d3.ascending))
+    xScale.domain(xScale.domain().sort(d3.ascending));
     graph
       .append("g")
       .attr("transform", "translate(0," + height * 0.78 + ")")
@@ -178,8 +180,6 @@ class LineGraph extends React.Component {
       .attr("font-size", "14px")
       .text("Avg Rainfall (mm)");
 
-      
-
     for (let i = 0; i < locations.length; i++) {
       let locationData = filteredData.filter(
         (item) => item[locationIndex] === locations[i]
@@ -194,11 +194,10 @@ class LineGraph extends React.Component {
           if (locationData[k][monthIndex] === j)
             val += locationData[k][rainfallIndex];
         }
-        if(val==0){
+        if (val == 0) {
           val = avgRainfallLoc[i];
         }
         graphData.avgRainfall.push(val / years.length);
-        
       }
       //console.log(graphData.avgRainfall)
       graph
@@ -212,18 +211,59 @@ class LineGraph extends React.Component {
           d3
             .line()
             .x(function (d) {
-              
               return xScale(d) + xScale.bandwidth() / 2;
             })
             .y(function (d) {
-              
               return yScale(graphData.avgRainfall[d - 1]);
             })
         );
     }
+
+    d3.selectAll(".line-graph-legend").select("svg").remove();
+
+    var SVG = d3
+      .select(".line-graph-legend")
+      .append("svg")
+      .attr("width", 100)
+      .attr("height", 200);
+    var size = 12;
+    SVG.selectAll("mydots")
+      .data(locations)
+      .enter()
+      .append("rect")
+      .attr("y", function (d, i) {
+        return 10 + i * (size + 5);
+      })
+      .attr("width", size)
+      .attr("height", size)
+      .style("fill", function (d, i) {
+        return colores_google(i);
+      });
+
+    SVG.selectAll("mylabels")
+      .data(locations)
+      .enter()
+      .append("text")
+      .attr("x", size * 1.2)
+      .attr("y", function (d, i) {
+        return 10 + i * (size + 5) + size / 2;
+      })
+      .style("fill", function (d, i) {
+        return colores_google(i);
+      })
+      .text(function (d) {
+        return d;
+      })
+      .attr("text-anchor", "left")
+      .style("alignment-baseline", "middle");
   }
   render() {
-    return <div className="line-graph"></div>;
+    return (
+      <div className="line-graph-legend-container">
+        <div className="line-graph"></div>
+        <div className="line-graph-legend"></div>
+      </div>
+    );
   }
 }
 
