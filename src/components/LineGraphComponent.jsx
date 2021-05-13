@@ -12,7 +12,7 @@ class LineGraph extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(this.props.state.interactedFrom == 'BarGraph'){
+    if(this.props.state.interactedFrom === 'BarGraph' || this.props.state.interactedFrom === "Map"){
       this.drawLineGraph();
     }
     if (
@@ -42,7 +42,9 @@ class LineGraph extends React.Component {
       years = ["2009","2010", "2011", "2012", "2013", "2014","2015","2016"];
     }
 
-    let locations = [
+    let locations = this.props.state.locations;
+    if(locations.length===0){
+       locations = [
       "Perth",
       "Adelaide",
       "Canberra",
@@ -50,6 +52,7 @@ class LineGraph extends React.Component {
       // "Uluru",
       // "Hobart",
     ];
+  }
     //let years = [2010, 2011, 2012, 2013, 2014];
     //console.log(years,filteredData[10][yearIndex])
     filteredData = filteredData.filter(

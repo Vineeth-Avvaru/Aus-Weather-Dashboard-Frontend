@@ -47,6 +47,9 @@ class Main extends React.Component {
     this.setState({
       locations: [...locations],
       interactiveMode: true,
+      interactedFrom: "Map",
+      years: [],
+      selectedIDs: [],
     });
   }
 
@@ -95,6 +98,7 @@ class Main extends React.Component {
                       this.handleLocations(locations)
                     }
                     locations={this.state.locations}
+                    interactedFrom = {this.state.interactedFrom}
                   />
                 )}
               </div>
@@ -112,6 +116,7 @@ class Main extends React.Component {
                   <BarGraph
                     weatherData={this.state.weatherData}
                     years={this.state.years}
+                    state={this.state}
                     updateYears={(years) => this.handleYears(years)}
                   />
                 )}

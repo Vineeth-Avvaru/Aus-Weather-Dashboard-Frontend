@@ -20,6 +20,9 @@ class BarGraph extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    if(this.props.state.interactedFrom ==="Map"){
+      this.drawBarGraph();
+    }
     if (
       JSON.stringify(this.props.weatherData) !==
       JSON.stringify(prevProps.weatherData)
@@ -46,6 +49,8 @@ class BarGraph extends React.Component {
   drawBarGraph() {
     let weatherData = this.props.weatherData;
     let columns = weatherData.columns;
+    let locationIndex = columns.indexOf("Location");
+
     let yearIndex = columns.indexOf("year");
     let filteredData = weatherData.data.filter(
       (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017
@@ -53,6 +58,16 @@ class BarGraph extends React.Component {
     let rainfallIndex = columns.indexOf("Rainfall");
     let selectedBars = [];
     let rainfall = {};
+    let locations = this.props.state.locations;
+
+    if(locations.length>0){
+    filteredData = filteredData.filter(
+      (item) =>
+        locations.includes(item[locationIndex])
+       
+    );
+    
+    }
 
     filteredData.forEach((element) => {
       let year = element[yearIndex];
@@ -77,6 +92,7 @@ class BarGraph extends React.Component {
       },
       width = width_cont - margin.left - margin.right,
       height = height_cont - margin.top - margin.bottom;
+    d3.selectAll(".bar-graph").select('svg').remove();
     const svg = d3
       .select(".bar-graph")
       .append("svg")

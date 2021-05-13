@@ -15,7 +15,7 @@ class ScatterPlot extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(this.props.state.interactedFrom !== 'ScatterPlot'){
+    if(this.props.state.interactedFrom == 'Map' || this.props.state.interactedFrom == 'BarGraph'){
       this.drawScatterPlot();
     }
     
@@ -33,20 +33,29 @@ class ScatterPlot extends React.Component {
 
   drawScatterPlot() {
     let years = this.props.state.years;
+    let locations = this.props.state.locations;
     let weatherData = this.props.weatherData;
     let columns = weatherData.columns;
     let yearIndex = columns.indexOf("year");
     let indexIndex = columns.indexOf("index");
-    const selectedDots = new Set();
-    let filteredData=undefined;
+    let locationIndex = columns.indexOf("Location");
 
+    const selectedDots = new Set();
+    let filteredData=weatherData.sampled_data;
+
+    if(locations.length>0){
+      filteredData = filteredData.filter(
+        (item) =>
+        locations.includes(item[locationIndex])
+      );
+    }
     if(years.length!==0){
-      filteredData = weatherData.sampled_data.filter(
+      filteredData = filteredData.filter(
         (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017 && years.includes(item[yearIndex].toString())
       );
     }
     else {
-      filteredData = weatherData.sampled_data.filter(
+      filteredData = filteredData.filter(
         (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017 
       );
     }
