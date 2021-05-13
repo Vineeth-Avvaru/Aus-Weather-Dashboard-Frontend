@@ -34,6 +34,7 @@ class Map extends React.Component {
   }
 
   render() {
+    console.log('Map render start')
     let locations = [
       {
         name: "Sydney",
@@ -289,7 +290,7 @@ class Map extends React.Component {
         >
           {locations.map((location) => {
             let name = location.name;
-            //console.log(name,location.rainfallIndex)
+            //console.log(name,(Math.round(location.rainfallIndex/0.25)))
             return (
               <Marker
                 key={location.name}
@@ -301,7 +302,8 @@ class Map extends React.Component {
                   
                   this.props.locations.indexOf(name) === -1
                     ? {
-                        url: "/rain_"+(Math.floor(location.rainfallIndex/0.25)+1)+".svg",
+                        url: "/rain_"+(Math.round(location.rainfallIndex/0.25))+".svg",
+                        //url: "/raindrop.svg",
                         scaledSize: new window.google.maps.Size(10, 15),
                       }
                     : {
@@ -317,11 +319,13 @@ class Map extends React.Component {
           })}
         </GoogleMap>
       );
+
     };
 
     const WrappedMap = withScriptjs(withGoogleMap(AustraliaMap));
     // const locations = ["Melbourne", "Perth"];
     // console.log(process.env.REACT_APP_GOOGLE_KEY);
+    console.log('Map render end')
     return (
       <div className="map-con">
         <button
@@ -346,6 +350,7 @@ class Map extends React.Component {
         </div>
       </div>
     );
+    
   }
 }
 
