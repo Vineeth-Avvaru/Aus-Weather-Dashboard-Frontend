@@ -5,15 +5,20 @@ import {
   withGoogleMap,
   Marker,
 } from "react-google-maps";
+import "./MapContainer.css";
 
 class Map extends React.Component {
   constructor(props) {
     super(props);
     this.handleMarkerClick = this.handleMarkerClick.bind(this);
+    this.resetLocations = this.resetLocations.bind(this);
   }
   shouldComponentUpdate(nextProps, nextState) {
-    
     return nextProps.interactedFrom === "Map";
+  }
+
+  resetLocations() {
+    this.props.handleLocations([]);
   }
 
   handleMarkerClick(locationName) {
@@ -313,7 +318,16 @@ class Map extends React.Component {
     // const locations = ["Melbourne", "Perth"];
     // console.log(process.env.REACT_APP_GOOGLE_KEY);
     return (
-      <div>
+      <div className="map-con">
+        <button
+          className="reset-locations"
+          variant="outlined"
+          onClick={() => {
+            this.resetLocations();
+          }}
+        >
+          Reset
+        </button>
         {/* <button onClick={() => this.props.handleLocations(locations)}>
           Update Locations
         </button> */}

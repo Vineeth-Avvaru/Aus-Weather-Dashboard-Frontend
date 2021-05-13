@@ -1,0 +1,9 @@
+.map-con {
+  position: relative;
+}
+.reset-locations {
+  position: absolute;
+  z-index: 6;
+  top: 0;
+  right: 0;
+}
