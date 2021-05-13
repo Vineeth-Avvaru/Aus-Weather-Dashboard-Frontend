@@ -60,16 +60,22 @@ class ParallelPlot extends React.Component {
     let locationIndex = columns.indexOf("Location");
     let filteredData = weatherData.sampled_data;
 
-    // if(years.length!==0){
-    //   filteredData = weatherData.sampled_data.filter(
-    //     (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017 && years.includes(item[yearIndex].toString())
-    //   );
-    // }
-    // if(selectedIDs.length!==0){
-    //   filteredData = filteredData.filter(
-    //     (item) => selectedIDs.includes(item[indexIndex])
-    //   );
-    // }
+    if(years.length!==0){
+      filteredData = filteredData.filter(
+        (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017 && years.includes(item[yearIndex].toString())
+      );
+    }
+    if(selectedIDs.length!==0){
+      filteredData = filteredData.filter(
+        (item) => selectedIDs.includes(item[indexIndex])
+      );
+    }
+    if(locations.length>0){
+      filteredData = filteredData.filter(
+        (item) =>
+        locations.includes(item[locationIndex])
+      );
+    }
 
 
     let features_data = filteredData;
@@ -86,44 +92,44 @@ class ParallelPlot extends React.Component {
       features_data.map((x) => x[i])
     );
     
-    let index = [];
-    if(years.length!==0 || selectedIDs.length!==0 || locations.length!=0 || this.props.state.interactedFrom !==""){
-      d3.selectAll(".brush").selectAll(".selection").style("display","none")
-      if(years.length!==0){
-      filteredData = weatherData.sampled_data.filter(
-        (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017 && years.includes(item[yearIndex].toString())
-      );
-    }
-    if(selectedIDs.length!==0){
-      filteredData = filteredData.filter(
-        (item) => selectedIDs.includes(item[indexIndex])
-      );
-    }
-    if(locations.length>0){
-      filteredData = filteredData.filter(
-        (item) =>
-        locations.includes(item[locationIndex])
-      );
-    }
-    filteredData.forEach((element) => {
-      index.push(element[indexIndex]);
-    });
+  //   let index = [];
+  //   if(years.length!==0 || selectedIDs.length!==0 || locations.length!=0){
+  //     d3.selectAll(".brush").selectAll(".selection").style("display","none")
+  //     if(years.length!==0){
+  //     filteredData = weatherData.sampled_data.filter(
+  //       (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017 && years.includes(item[yearIndex].toString())
+  //     );
+  //   }
+  //   if(selectedIDs.length!==0){
+  //     filteredData = filteredData.filter(
+  //       (item) => selectedIDs.includes(item[indexIndex])
+  //     );
+  //   }
+  //   if(locations.length>0){
+  //     filteredData = filteredData.filter(
+  //       (item) =>
+  //       locations.includes(item[locationIndex])
+  //     );
+  //   }
+  //   filteredData.forEach((element) => {
+  //     index.push(element[indexIndex]);
+  //   });
 
-    let foreground = d3.select('.foreground')
-    //console.log(index)
-    foreground
-      .selectAll("path")
-      .style("display", function (d, i) {
-        //console.log(d,i)
-        if(index.includes(i)){
-          //console.log(d,i)
-        }
-          return index.includes(i) ? null: "none";
-      })
+  //   let foreground = d3.select('.foreground')
+  //   //console.log(index)
+  //   foreground
+  //     .selectAll("path")
+  //     .style("display", function (d, i) {
+  //       //console.log(d,i)
+  //       if(index.includes(i)){
+  //         //console.log(d,i)
+  //       }
+  //         return index.includes(i) ? null: "none";
+  //     })
     
 
-    return;
-  }
+  //   return;
+  // }
    
     // filteredData.forEach((element) => {
     //   rainfall.push(element[rainfallIndex]);
