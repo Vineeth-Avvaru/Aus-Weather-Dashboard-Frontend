@@ -34,7 +34,7 @@ class Map extends React.Component {
   }
 
   render() {
-    const locations = [
+    let locations = [
       {
         name: "Sydney",
         lat: -33.86882,
@@ -46,7 +46,7 @@ class Map extends React.Component {
         long: 131.03688,
       },
       {
-        name: "Melborne",
+        name: "Melbourne",
         lat: -37.813629,
         long: 144.963058,
       },
@@ -276,16 +276,20 @@ class Map extends React.Component {
         long: 136.8166634,
       },
     ];
+    locations = locations.map((location)=>{
+      return {...location,rainfallIndex : this.props.weatherData.loc_rainfall_index[location.name]}
+    })
     const AustraliaMap = () => {
       return (
         <GoogleMap
           // mapTypeId={"e0f74981b31229b8"}
           // defaultMapId={"e0f74981b31229b8"}
-          defaultZoom={2.5}
-          defaultCenter={{ lat: -23.698042, lng: 133.880753 }}
+          defaultZoom={3}
+          defaultCenter={{ lat: -27.698042, lng: 136.880753 }}
         >
           {locations.map((location) => {
             let name = location.name;
+            //console.log(name,location.rainfallIndex)
             return (
               <Marker
                 key={location.name}
@@ -294,9 +298,10 @@ class Map extends React.Component {
                   lng: location.long,
                 }}
                 icon={
+                  
                   this.props.locations.indexOf(name) === -1
                     ? {
-                        url: "/raindrop.svg",
+                        url: "/rain_"+(Math.floor(location.rainfallIndex/0.25)+1)+".svg",
                         scaledSize: new window.google.maps.Size(10, 15),
                       }
                     : {
@@ -331,12 +336,12 @@ class Map extends React.Component {
         {/* <button onClick={() => this.props.handleLocations(locations)}>
           Update Locations
         </button> */}
-        <div style={{ width: "30vw", height: "35vh" }}>
+        <div style={{ width: "32vw", height: "35vh" }}>
           <WrappedMap
             googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=${process.env.REACT_APP_GOOGLE_KEY}`}
             loadingElement={<div style={{ height: `100%` }} />}
             containerElement={<div style={{ height: `250px` }} />}
-            mapElement={<div style={{ height: `100%` }} />}
+            mapElement={<div style={{ height: `110%` }} />}
           />
         </div>
       </div>
