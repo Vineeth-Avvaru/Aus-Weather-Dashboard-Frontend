@@ -28,6 +28,17 @@ class ParallelPlot extends React.Component {
   drawParallelPlot() {
     let weatherData = this.props.weatherData;
     let columns = weatherData.columns;
+    // let features = [
+    //   "month",
+    //   "Rainfall",
+    //   "Pressure",
+    //   "Evaporation",
+    //   "Sunshine",
+    //   "Temperature",
+    //   "Humidity",
+      
+    //   "WindGustSpeed",
+    // ];
     let features = [
       "month",
       "Rainfall",
@@ -48,18 +59,24 @@ class ParallelPlot extends React.Component {
       "Pressure",
       "Temperature",
     ];
+    let locations = this.props.state.locations;
+    let selectedIDs = this.props.state.selectedIDs;
+
+    if(locations.length!=0 || selectedIDs.length!=0){
+      features.unshift("Location");
+      original_features.unshift("Location")
+    }
     let indexMap = new Map();
     for (let i = 0; i < features.length; i++) {
       indexMap.set(features[i], columns.indexOf(features[i]));
     }
     let years = this.props.state.years;
-    let locations = this.props.state.locations;
-    let selectedIDs = this.props.state.selectedIDs;
     let yearIndex = columns.indexOf("year");
     let indexIndex = columns.indexOf("index");
     let locationIndex = columns.indexOf("Location");
     let filteredData = weatherData.sampled_data;
 
+    
     if(years.length!==0){
       filteredData = filteredData.filter(
         (item) => item[yearIndex] > 2008 && item[yearIndex] < 2017 && years.includes(item[yearIndex].toString())
@@ -200,7 +217,7 @@ class ParallelPlot extends React.Component {
       );
     for (let i = 0; i < features.length; i++) {
       let feature = features[i];
-      if (feature !== "month") {
+      if (feature !== "month" && feature!=="Location") {
         y[feature] = d3
           .scaleLinear()
           .domain([d3.min(features_data[i]), d3.max(features_data[i])]).nice()
@@ -219,7 +236,7 @@ class ParallelPlot extends React.Component {
         features.map((feature, i) => {
           var v = dragging[feature];
           var tx = v == null ? x(feature) : v;
-          if (feature !== "month")
+          if (feature !== "month" && feature !=="Location")
             return [tx, y[feature](d[original_features.indexOf(feature)])];
           else
             return [
@@ -316,6 +333,7 @@ class ParallelPlot extends React.Component {
           })
       );
     let featureUnits ={
+      "Location":"Location",
       "month" : "Month",
       "Rainfall" : "Rainfall (mm)",
       "Evaporation" : "Evaporation (mm)",
@@ -329,7 +347,8 @@ class ParallelPlot extends React.Component {
     g.append("g")
       .attr("class", "blah")
       .each(function (d) {
-        d3.select(this).call(
+        d3.select(this)
+        .call(
           d3
             .axisLeft().scale(y[d])
             .tickFormat((d) => {
@@ -348,9 +367,11 @@ class ParallelPlot extends React.Component {
       .text(function (d) {
         return featureUnits[d];
       });
+      
     g.append("g")
       .attr("class", "brush")
       .each(function (d) {
+       
         d3.select(this).call(
           (y[d].brush = d3
             .brushY()
@@ -388,15 +409,17 @@ class ParallelPlot extends React.Component {
       for (var i = 0; i < features.length; ++i) {
         if (event.target === y[features[i]].brush) {
 
-          if(features[i]==='month'){
+          if(features[i]==='month' || features[i]=="Location"){
             let eachBand = y[features[i]].step();
             let index1 = Math.floor((event.selection[0]/ eachBand)-eachBand*0.01);
             let index2 = Math.floor((event.selection[1] / eachBand)-eachBand*0.01)-1;
             let len = y[features[i]].domain().length;
             let val1 = y[features[i]].domain()[index1];
             let val2 = y[features[i]].domain()[index2];
+            console.log(eachBand,index1,index2,len)
 
             extents[i] = [len+1-val1,len+1-val2]
+
   
           }
           else{
