@@ -25,3 +25,7 @@ text {
   stroke: #fff;
   shape-rendering: crispEdges;
 }
+.locationAxis .tick text { font-size: 6px; }
+.locationAxis path {
+  visibility: visible;
+}
